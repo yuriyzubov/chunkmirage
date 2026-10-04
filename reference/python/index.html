@@ -1,0 +1,5736 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spoof chunked array formats over HTTP with on-the-fly processing.">
+      
+      
+      
+        <link rel="canonical" href="https://yuriyzubov.github.io/chunkmirage/reference/python/">
+      
+      
+        <link rel="prev" href="../api/">
+      
+      
+        <link rel="next" href="../cli/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Python API - chunkmirage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#python-api" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="chunkmirage" class="md-header__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chunkmirage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Python API
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="chunkmirage" class="md-nav__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    chunkmirage
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://yuriyzubov.github.io/chunkmirage/browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo gallery (in your browser) ↗
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipelines, ops and halos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/interactivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#top-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.Pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.Pipeline.rebuilt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rebuilt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.Pipeline.chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.PipelineSpec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PipelineSpec
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.register.RegisterParams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterParams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.schema.spec_schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spec_schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.registry.open_source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_source
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.create_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.serve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        serve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        url
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wait
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DatasetRegistry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry.resolve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry.refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        refresh
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry.subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        subscribe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ops
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Op
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.cached" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cached
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.input_voxel_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        input_voxel_size
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.for_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        for_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.apply_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        apply_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.cache_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cache_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.digest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        digest
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources-and-core-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources and core types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source.read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source.read_padded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_padded
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source.cache_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cache_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.ChunkedSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChunkedSource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.ChunkedSource.chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.MultiscaleSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MultiscaleSource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.MultiscaleSource.level_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        level_for
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.MultiscaleSource.nearest_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nearest_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.ArrayInfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ArrayInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.ArrayInfo.chunks_covering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunks_covering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.ArrayInfo.rescaled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rescaled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.Box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Box
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.Box.relative_to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        relative_to
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.cache.LRUCache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LRUCache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.cache.LRUCache.invalidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        invalidate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Claim
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Cancelled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cancelled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.claimed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        claimed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Queue.run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Queue.stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stats
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coordinate-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coordinate transformations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        apply
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        inverse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.approximate_inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        approximate_inverse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.describe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Affine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Affine.then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        then
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.VectorField" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VectorField
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.VectorField.sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sample
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Displacements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Displacements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.InverseDisplacements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InverseDisplacements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.SwirlField" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SwirlField
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Swirls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Swirls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.simplify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        simplify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ngff.Scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scene
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ngff.Scene.transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ngff.parse_transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.scene.open_scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_scene
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.warp.open_warp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_warp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.registration.solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        solve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.registration.Settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.registration.find_affine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_affine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.register.open_register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stitching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stitching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.StitchParams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StitchParams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.detect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.match" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.ransac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ransac
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.fuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fuse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.tiles_from_bdv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tiles_from_bdv
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.stitch.open_stitch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_stitch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tracking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lineage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.follow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        follow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.newborns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        newborns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.daughters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        daughters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.mother_of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mother_of
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.measure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        measure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frontends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.resolve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.encode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        encode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.resolve_range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_range
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.compute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.listing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        listing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.relative_scales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        relative_scales
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.pad_to_full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pad_to_full
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing & doc policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#top-level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Top level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.Pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.Pipeline.rebuilt" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rebuilt
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.Pipeline.chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.pipeline.PipelineSpec" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        PipelineSpec
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.register.RegisterParams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        RegisterParams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.schema.spec_schema" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        spec_schema
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.registry.open_source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_source
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.create_app" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        create_app
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.serve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        serve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Server
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.url" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        url
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.start" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        start
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.stop" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stop
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.serving.Server.wait" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        wait
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        DatasetRegistry
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry.resolve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry.refresh" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        refresh
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.server.DatasetRegistry.subscribe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        subscribe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ops" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ops
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Op
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.cached" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cached
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.input_voxel_size" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        input_voxel_size
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.for_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        for_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.apply_at" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        apply_at
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.cache_token" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cache_token
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.Op.digest" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        digest
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ops.base.register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources-and-core-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources and core types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Source
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source.read" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source.read_padded" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        read_padded
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.Source.cache_key" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        cache_key
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.ChunkedSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ChunkedSource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.ChunkedSource.chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.MultiscaleSource" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        MultiscaleSource
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.MultiscaleSource.level_for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        level_for
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.base.MultiscaleSource.nearest_level" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        nearest_level
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.ArrayInfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ArrayInfo
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.ArrayInfo.chunks_covering" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        chunks_covering
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.ArrayInfo.rescaled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        rescaled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.Box" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Box
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.core.Box.relative_to" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        relative_to
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.cache.LRUCache" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        LRUCache
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.cache.LRUCache.invalidate" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        invalidate
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Claim" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Claim
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Cancelled" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Cancelled
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.claimed" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        claimed
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Slots" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Slots
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Queue" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Queue
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Queue.run" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        run
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.demand.Queue.stats" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        stats
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#coordinate-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coordinate transformations
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.apply" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        apply
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        inverse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.approximate_inverse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        approximate_inverse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Transform.describe" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        describe
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Affine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Affine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Affine.then" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        then
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.VectorField" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        VectorField
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.VectorField.sample" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        sample
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Displacements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Displacements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.InverseDisplacements" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        InverseDisplacements
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.SwirlField" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SwirlField
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.Swirls" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Swirls
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.transforms.simplify" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        simplify
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ngff.Scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scene
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ngff.Scene.transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.ngff.parse_transform" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        parse_transform
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.scene.open_scene" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_scene
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.warp.open_warp" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_warp
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.registration.solve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        solve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.registration.Settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Settings
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.registration.find_affine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        find_affine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.register.open_register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#stitching" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stitching
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.StitchParams" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        StitchParams
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.detect" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        detect
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.match" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        match
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.ransac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        ransac
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.optimize" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        optimize
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.register" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        register
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.fuse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        fuse
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.stitching.tiles_from_bdv" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        tiles_from_bdv
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.sources.stitch.open_stitch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        open_stitch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#tracking" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tracking
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.lineage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        lineage
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.follow" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        follow
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.step" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        step
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.newborns" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        newborns
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.daughters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        daughters
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.mother_of" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        mother_of
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.tracking.measure" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        measure
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#frontends" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontends
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Frontend
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.resolve" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.encode" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        encode
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.resolve_range" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        resolve_range
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.compute" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        compute
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.listing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        listing
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.relative_scales" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        relative_scales
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#chunkmirage.frontends.base.Frontend.pad_to_full" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        pad_to_full
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yuriyzubov/chunkmirage/edit/main/docs/reference/python.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="python-api">Python API<a class="headerlink" href="#python-api" title="Permanent link">&para;</a></h1>
+<h2 id="top-level">Top level<a class="headerlink" href="#top-level" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.pipeline.Pipeline"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>A source's levels through <code>ops</code>. Ops run on every level, except from the first op
+with an input voxel size (<code>Op.input_voxel_size</code>, a model trained at one resolution):
+that one runs on one level (the source's at that size, else one resampled to it), its
+output is cached, and the coarser levels are made from it by <code>downsample</code>, by the
+source pyramid's own factors; the ops after it run on every level.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.pipeline.Pipeline.rebuilt" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">rebuilt</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.pipeline.Pipeline.rebuilt" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>This pipeline built again on the same source, cache and settings, with its ops'
+<code>cache_token</code> read anew: stages whose external state changed get new keys.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.pipeline.Pipeline.chunk" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">chunk</span><span class="p">(</span><span class="n">level</span><span class="p">,</span> <span class="n">index</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.pipeline.Pipeline.chunk" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Compute (or fetch cached) output chunk <code>index</code> at scale <code>level</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.pipeline.PipelineSpec"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+
+
+        <p>JSON-serializable description of a pipeline (what the REST API and CLI exchange).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.sources.register.RegisterParams"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+
+
+        <p>The query of a <code>register://</code> URL. The one definition of it: the browser engine
+(<code>web/</code>) generates its TypeScript types and form defaults from this model's JSON
+Schema (<code>chunkmirage schema</code>).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.schema.spec_schema"></a>
+    <div class="doc doc-contents first">
+
+        <p>One schema whose <code>$defs</code> hold every model: <code>PipelineSpec</code>, <code>RegisterParams</code>,
+<code>StitchParams</code>, one per registered op (tagged with its <code>op</code> name), and <code>OpSpec</code>, the union of them.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.sources.registry.open_source"></a>
+    <div class="doc doc-contents first">
+
+        <p>Open any supported dataset as a <code>MultiscaleSource</code>.</p>
+<p>Dispatch is by content, not extension: zarr v2/v3, n5 and neuroglancer precomputed go
+through tensorstore; <code>.h5</code>/<code>.hdf5</code> paths (<code>file.h5::/dataset</code>) go through h5py;
+<code>synthetic://kind?shape=...</code> generates data procedurally (see <code>sources.synthetic</code>);
+<code>scene://group?image=...&amp;target=...</code> resamples an image through OME-Zarr 0.6
+coordinate transformations (see <code>sources.scene</code>); <code>warp://image?field=swirl&amp;...</code>
+twists an image through a procedural deformation (see <code>sources.warp</code>);
+<code>register://moving?fixed=...</code> registers one image onto another, solving the
+deformation on a GPU when opened (see <code>sources.register</code>); <code>stack://a|b</code> serves
+images on one grid as the channels of one array, for ops over several images (see
+<code>sources.stack</code>); <code>flip://image?axes=y</code> mirrors an image stored the other way round
+(see <code>sources.flip</code>); <code>stitch://project.xml</code> stitches a BigStitcher project's tiles by
+interest points and RANSAC when opened, and fuses them as they are read (see
+<code>sources.stitch</code>); <code>.tif</code>/<code>.tiff</code> paths are (cloud-optimized) GeoTIFFs, read
+tile by tile with their overviews as levels (see <code>sources.geotiff</code>). Other packages
+add schemes of their own (<code>register_source</code>, or the <code>chunkmirage.sources</code> entry
+point).</p>
+<p><code>cache_bytes</code> is tensorstore's pool of decoded source chunks; <code>cache</code> is the chunk
+cache that computed sources keep their expensive intermediates in (<code>register://</code>'s
+refined blocks), normally the pipeline's. <code>kind</code> says what the values are (<code>image</code>,
+<code>label</code>, <code>mask</code>) over what the source guessed: stored arrays guess from their dtype
+(<code>core.kind_for_dtype</code>), so a uint32 image needs <code>kind="image"</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.server.create_app"></a>
+    <div class="doc doc-contents first">
+
+        <p>The ASGI app serving <code>datasets</code> (a mapping of names to pipelines or specs, or a
+:class:<code>DatasetRegistry</code>) through every frontend, with the control API.</p>
+<ul>
+<li><code>public_url</code>: base of the links the app hands out (default: the request's own, with
+  the prefix the app is mounted under).</li>
+<li><code>allow_edit</code>: whether <code>/api/datasets</code> may create, replace and remove datasets.</li>
+<li><code>threads</code>: chunk requests computing at once (default 40).</li>
+<li><code>token</code>: required on <code>/api/*</code> (header or <code>?token=</code>); the datasets stay open.</li>
+<li><code>extra_routes</code>: Starlette routes of your own, matched after the built-in ones and
+  before the datasets (<code>/{name}/...</code>); under <code>/api/</code> they share the token.</li>
+<li><code>route_plugins</code>: also add the routes of installed <code>chunkmirage.routes</code> plugins.</li>
+<li><code>resolver</code>: builds datasets requested by a name nobody registered
+  (<code>DatasetRegistry.resolve</code>); the registry's own if not given.</li>
+</ul>
+<p>It can be mounted in another Starlette app (<code>Mount("/prefix", app)</code>): paths, the token
+and links are then relative to the prefix.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.serving.serve"></a>
+    <div class="doc doc-contents first">
+
+        <p>Serve <code>app</code> (<code>create_app</code>'s, or any ASGI app) on <code>host</code>: on <code>port</code>, 0 for any
+free one, None for the first free one from 8000. The port is bound before this returns
+or calls anything, so no other process can take it. <code>on_ready(server)</code> is called once
+connections are accepted. By default the server runs in a background thread and is
+returned running (<code>server.port</code>, <code>server.url</code>, <code>server.stop()</code>); with <code>block</code>
+it runs in this thread until stopped, as <code>chunkmirage serve</code> does.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.serving.Server"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p><code>app</code> served by uvicorn on <code>sock</code>, a socket already bound and listening
+(<code>netutil.bind_socket</code>), so <code>port</code> and <code>url</code> are known before it runs.</p>
+<p><code>run</code> serves in this thread until stopped (in the main thread, Ctrl-C stops it);
+<code>start</code> serves in a background thread and returns once connections are accepted.
+<code>on_ready(server)</code> is called then, from the server's event loop, so it should be
+quick. <code>ssl</code> is <code>(certfile, keyfile)</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="chunkmirage.serving.Server.url" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">url</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#chunkmirage.serving.Server.url" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Where other machines reach it: this machine's network address when bound to
+every interface, <code>localhost</code> for a loopback address.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.serving.Server.run" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">run</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.serving.Server.run" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Serve in this thread until <code>stop</code> (or Ctrl-C, in the main thread).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.serving.Server.start" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">start</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">60</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.serving.Server.start" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Serve in a background thread; returns once it accepts connections.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.serving.Server.stop" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">stop</span><span class="p">(</span><span class="n">timeout</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.serving.Server.stop" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Stop serving: requests in progress finish, then the port is released.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.serving.Server.wait" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">wait</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.serving.Server.wait" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Block until a server started in the background stops.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.server.DatasetRegistry"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>Named pipelines sharing one cache. Thread-safe for live edits.</p>
+<p><code>version</code> increments on every add/remove; <code>subscribe</code> registers a callback invoked
+(outside the lock, in the editing thread) with <code>(name, pipeline_or_None)</code>.</p>
+<p><code>resolver</code>, if given, is asked for a name requested but not registered (<code>resolve</code>):
+what it returns is built and registered under that name, once however many requests
+ask at the same time, and served from then on like any other dataset.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.server.DatasetRegistry.resolve" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">resolve</span><span class="p">(</span><span class="n">name</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.server.DatasetRegistry.resolve" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The pipeline named <code>name</code>: the registered one, else the one the resolver builds
+for it (then registered), else None. Exceptions from the resolver propagate.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.server.DatasetRegistry.refresh" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">refresh</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.server.DatasetRegistry.refresh" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Rebuild dataset <code>name</code> (every one if None) so its ops' <code>cache_token</code> is read
+again, after the state outside their parameters changed. Returns the names whose
+digest changed: they get new links, and subscribers and <code>/api/events</code> hear of it.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.server.DatasetRegistry.subscribe" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">subscribe</span><span class="p">(</span><span class="n">callback</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.server.DatasetRegistry.subscribe" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Register <code>callback(name, pipeline)</code>; returns an unsubscribe function.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="ops">Ops<a class="headerlink" href="#ops" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.ops.base.Op"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+
+
+        <p>A block-wise operation.</p>
+<p>Subclass, set <code>name</code>, declare parameters as pydantic fields, and implement <code>apply</code>.</p>
+<ul>
+<li><code>halo</code>: voxels of upstream context needed on every side (int or per-axis tuple).
+  The framework reads the padded region, calls <code>apply</code> on it, and crops the result.</li>
+<li><code>cache</code>: whether this stage's output chunks should be memoized. Turn on for
+  expensive stages (inference) so cheap downstream tweaks (threshold) are free. A
+  pipeline can override it per op: <code>{"op": "gaussian", "sigma": 4, "cache": true}</code>.</li>
+<li><code>output_dtype</code> / <code>output_info</code>: describe the result; default is unchanged.</li>
+<li><code>output_kind</code>: what the result's values are (<code>ArrayInfo.kind</code>): <code>image</code>,
+  <code>label</code> or <code>mask</code>; <code>None</code> (the default) if the op does not say.</li>
+<li><code>cache_token()</code>: what the result depends on beyond the parameters (a file's
+  modification time, weights replaced in place); part of the op's identity.</li>
+<li><code>slots</code>: at most this many <code>apply</code> calls of this op at once, process-wide (a GPU,
+  a memory-hungry step), queued finest level first; <code>None</code> (the default): no limit.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+<div class="doc doc-object doc-attribute">
+
+
+
+<h2 id="chunkmirage.ops.base.Op.cached" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">cached</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-property"><code>property</code></small>
+  </span>
+
+<a href="#chunkmirage.ops.base.Op.cached" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Whether this op's output is memoized: its own setting, else its class's.</p>
+
+    </div>
+
+</div>
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.ops.base.Op.input_voxel_size" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">input_voxel_size</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.ops.base.Op.input_voxel_size" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The voxel size this op must read, along the data's last axes and in the source's
+units: a model trained at one resolution. The pipeline then runs it on one level (the
+source's at that size, else one resampled to it), caches what it makes, and makes the
+coarser levels by downsampling that. <code>None</code> (the default): it runs on every level.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.ops.base.Op.for_level" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">for_level</span><span class="p">(</span><span class="n">info</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.ops.base.Op.for_level" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>This op as it runs on a scale level described by <code>info</code> (the stage's output, on
+the input's grid). Ops that work in physical units override it to take the level's
+voxel size: a slope in degrees needs the pixel spacing, which doubles from level to
+level. The default is the op itself.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.ops.base.Op.apply_at" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">apply_at</span><span class="p">(</span><span class="n">block</span><span class="p">,</span> <span class="n">box</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.ops.base.Op.apply_at" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Like <code>apply</code> but told where <code>block</code> sits (<code>box</code> = its halo-padded extent in
+voxels of this scale level). Override when the result must depend on position, e.g. to
+make per-chunk labels globally unique. Default delegates to <code>apply</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.ops.base.Op.cache_token" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">cache_token</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.ops.base.Op.cache_token" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>What this op's output depends on outside its parameters, as a string that changes
+when that does: a weights file's modification time, a model version. <code>None</code> (the
+default): nothing. It is part of <code>digest</code>, so a pipeline built after it changes has
+new stage keys and new links, and viewers refetch; <code>DatasetRegistry.refresh</code>
+rebuilds a served dataset to read it again.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.ops.base.Op.digest" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">digest</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.ops.base.Op.digest" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Identity of what the op computes: whether it is cached does not change that.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.ops.base.register"></a>
+    <div class="doc doc-contents first">
+
+
+    </div>
+
+</div><h2 id="sources-and-core-types">Sources and core types<a class="headerlink" href="#sources-and-core-types" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.sources.base.Source"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+
+
+        <p>Read-only, random-access array. Everything upstream of an op is a <code>Source</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.sources.base.Source.read" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">read</span><span class="p">(</span><span class="n">box</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#chunkmirage.sources.base.Source.read" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Return data for <code>box</code> (must lie within <code>info.shape</code>), shape == box.shape.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.sources.base.Source.read_padded" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">read_padded</span><span class="p">(</span><span class="n">box</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">edge</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.sources.base.Source.read_padded" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Read <code>box</code> even if it pokes outside the array. Out-of-range voxels are <code>fill</code>,
+or with <code>edge</code> the nearest voxel inside (so a filter sees no step at the border).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.sources.base.Source.cache_key" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">cache_key</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.sources.base.Source.cache_key" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Stable identity used to build cache keys for downstream stages.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.sources.base.ChunkedSource"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="chunkmirage.sources.base.Source" href="#chunkmirage.sources.base.Source">Source</a></code></p>
+
+
+
+        <p>A source materialized chunk-by-chunk via <code>compute_chunk</code> and memoized in an LRU.</p>
+<p><code>read(box)</code> gathers the covering chunks (from cache or freshly computed) and slices.
+This is the single mechanism behind <em>both</em> raw-source caching and per-stage caching:
+every pipeline stage is exposed to the next one as a <code>ChunkedSource</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.sources.base.ChunkedSource.chunk" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">chunk</span><span class="p">(</span><span class="n">index</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.sources.base.ChunkedSource.chunk" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Full (edge-clipped) chunk <code>index</code> as an array of shape <code>info.chunk_box(index).shape</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.sources.base.MultiscaleSource"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>An ordered list of <code>Source</code> levels, s0 = full resolution. <code>shader</code> is a
+Neuroglancer shader the viewer should show the data with (its channel axis then being
+a shader channel), for sources whose channels mean something particular.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.sources.base.MultiscaleSource.level_for" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">level_for</span><span class="p">(</span><span class="n">voxel_size</span><span class="p">,</span> <span class="n">rtol</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.sources.base.MultiscaleSource.level_for" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The level to read data at <code>voxel_size</code> from (its last axes, in the source's
+units), and whether it is at that size: one that is (within <code>rtol</code>), else the
+coarsest finer on every axis (resampled down, never up), else level 0.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.sources.base.MultiscaleSource.nearest_level" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">nearest_level</span><span class="p">(</span><span class="n">voxel_size</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.sources.base.MultiscaleSource.nearest_level" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The level whose voxel size (its last axes) is nearest <code>voxel_size</code>, by ratio
+(the sum over axes of the size's log ratio); the finer of two as near.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.core.ArrayInfo"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>Static description of one scale level of a chunked array (C-order axes). <code>kind</code> is
+what its values are, for viewers choosing how to show it: <code>image</code> (intensities),
+<code>label</code> (segment ids) or <code>mask</code> (inside or not); <code>None</code> if unknown.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.core.ArrayInfo.chunks_covering" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">chunks_covering</span><span class="p">(</span><span class="n">box</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.core.ArrayInfo.chunks_covering" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Yield chunk indices whose extent intersects <code>box</code> (assumed already clipped).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.core.ArrayInfo.rescaled" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">rescaled</span><span class="p">(</span><span class="n">voxel_size</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.core.ArrayInfo.rescaled" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>This array's extent on voxels of <code>voxel_size</code> along its last axes (as many as
+given): the shape rounded up, chunks as they were (in voxels), and the translation
+moved so each voxel's position is its centre, as OME-Zarr's is (a voxel twice as big
+covers two, its centre half an old voxel on).</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.core.Box"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>Half-open voxel box <code>[start, stop)</code> in C-order axes.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.core.Box.relative_to" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">relative_to</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.core.Box.relative_to" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Express this box in coordinates whose origin is <code>other.start</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.cache.LRUCache"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="typing.Generic">Generic</span>[<span title="chunkmirage.cache.T">T</span>]</code></p>
+
+
+
+        <p>Thread-safe LRU keyed by any hashable, bounded by total bytes.</p>
+<p>A single shared instance is normally used for every pipeline stage; keys embed the
+stage hash so that changing a parameter downstream never evicts upstream entries
+except through normal LRU pressure.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.cache.LRUCache.invalidate" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">invalidate</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="kc">None</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.cache.LRUCache.invalidate" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Drop entries; if <code>prefix</code> is given, only tuple keys starting with it.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.demand.Claim"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>A request's hold on the work it needs, cancelled when its client stops waiting.
+<code>seq</code> is its place in line, taken when the request arrives.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.demand.Cancelled"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="Exception">Exception</span></code></p>
+
+
+
+        <p>No request wants this work any more.</p>
+
+
+
+
+
+
+
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.demand.claimed"></a>
+    <div class="doc doc-contents first">
+
+        <p><code>fn(*args)</code> for a request holding <code>claim</code>, in one of <code>slots</code> (run in a server
+thread); a request given up on before its turn comes costs nothing.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.demand.Slots"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>At most <code>n</code> requests computing at once, each in its own thread, which bounds the
+memory and CPU chunk work takes. A request waiting on a queue's work gives its slot up
+meanwhile (its thread only waits), so requests that need nothing expensive are never held
+up behind ones that do.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.demand.Queue"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>Jobs keyed by what they compute; see the module's description for the order.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.demand.Queue.run" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">run</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">level</span><span class="p">,</span> <span class="n">compute</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.demand.Queue.run" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>compute()</code>'s result for <code>key</code>, computed once however many ask at once.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.demand.Queue.stats" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">stats</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.demand.Queue.stats" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Jobs running and waiting per level, dropped, done per level, and the time done took.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div><h2 id="coordinate-transformations">Coordinate transformations<a class="headerlink" href="#coordinate-transformations" title="Permanent link">&para;</a></h2>
+<p>The model every registration format is read into, the OME-Zarr 0.6 reader, the
+deformable solver, and the <code>scene://</code>, <code>warp://</code> and <code>register://</code> sources built on them.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.transforms.Transform"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+
+
+        <p>A function from points in one coordinate system to points in another.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.transforms.Transform.apply" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">apply</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#chunkmirage.transforms.Transform.apply" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Map <code>(n, ndim_in)</code> points to <code>(n, ndim_out)</code> points.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.transforms.Transform.inverse" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">inverse</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.transforms.Transform.inverse" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The closed-form inverse, or None if there is none.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.transforms.Transform.approximate_inverse" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">approximate_inverse</span><span class="p">()</span></code>
+
+<a href="#chunkmirage.transforms.Transform.approximate_inverse" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>An inverse that may be estimated numerically; defaults to the exact one.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.transforms.Transform.describe" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">describe</span><span class="p">()</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#chunkmirage.transforms.Transform.describe" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>JSON-able identity; equal descriptions mean equal functions (used in cache keys).</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.transforms.Affine"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="chunkmirage.transforms.Transform" href="#chunkmirage.transforms.Transform">Transform</a></code></p>
+
+
+
+        <p><code>y = A @ x + t</code>, stored as the <code>(d_out, d_in + 1)</code> matrix <code>[A | t]</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.transforms.Affine.then" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">then</span><span class="p">(</span><span class="n">other</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.transforms.Affine.then" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p><code>other ∘ self</code>: apply self first.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.transforms.VectorField"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>A regularly sampled vector field: an array with one vector axis, plus the affine that
+maps its other (grid) axes to points in the transform's input space.</p>
+<p><code>sample(pts)</code> interpolates the vectors at arbitrary points, reading only the window of
+the array those points touch. Outside the field, values are clamped to the nearest edge.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.transforms.VectorField.sample" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">sample</span><span class="p">(</span><span class="n">pts</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.transforms.VectorField.sample" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Vectors at <code>pts</code> (NaN rows, e.g. unconvergent inverse points, stay NaN).</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.transforms.Displacements"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="chunkmirage.transforms.Transform" href="#chunkmirage.transforms.Transform">Transform</a></code></p>
+
+
+
+        <p><code>y = x + d(x)</code> with <code>d</code> a vector field in the input space (sampled, or
+procedural like <code>SwirlField</code>).</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.transforms.InverseDisplacements"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><a class="autorefs autorefs-internal" title="chunkmirage.transforms.Transform" href="#chunkmirage.transforms.Transform">Transform</a></code></p>
+
+
+
+        <p>Numerical inverse of <code>x -&gt; x + d(x)</code>: solves <code>x = y - d(x)</code> by fixed-point
+iteration, which converges wherever the field's Jacobian has norm below one (true for
+the smooth, non-folding warps registration produces). Points that do not converge
+(the warp folds there, so no unique inverse exists) come back as NaN, which the
+resampler renders as empty rather than as a wrong value.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.transforms.SwirlField"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>A procedural displacement field: a twist about an axis, computed exactly from
+coordinates, so nothing is stored and any parameter can change at any time.</p>
+<p>Points at distance <code>r</code> from the axis through <code>centre</code> turn about it by
+<code>angle * exp(-(r / radius)**2)</code> degrees: fully on the axis, fading out over about
+<code>radius</code>. Only the two <code>plane</code> axes move. Same interface as <code>VectorField</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.transforms.Swirls"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>Several 3-D swirls, their displacements added: swirl <code>k</code> turns points about the
+axis <code>axes[k]</code> (a direction, C order) through <code>centres[k]</code> by
+<code>angles[k] * exp(-(d / radii[k])**2)</code> degrees, <code>d</code> the distance from its centre.
+So each is a ball of twist fading in every direction, and a tilted axis moves points
+along all three axes. Where swirls overlap the sum is smooth but no longer a pure
+rotation. Same interface as <code>VectorField</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.transforms.simplify"></a>
+    <div class="doc doc-contents first">
+
+        <p>Unwrap bijections, flatten sequences and fold adjacent linear pieces into one affine.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.ngff.Scene"></a>
+    <div class="doc doc-contents first">
+
+
+
+        <p>The transformation graph of an OME-Zarr 0.6 scene or single multiscale image.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.ngff.Scene.transform" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">transform</span><span class="p">(</span><span class="n">src</span><span class="p">,</span> <span class="n">dst</span><span class="p">,</span> <span class="o">*</span><span class="p">,</span> <span class="n">approximate</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.ngff.Scene.transform" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The transform taking points in <code>src</code> to points in <code>dst</code>, composed along the
+shortest path of the graph. Edges are walked backwards only when the transform has
+a closed-form (or, with <code>approximate</code>, an estimated) inverse.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.ngff.parse_transform"></a>
+    <div class="doc doc-contents first">
+
+        <p>One transformation object -&gt; <code>Transform</code>. <code>base</code> is the URL of the group whose
+metadata holds <code>obj</code>; <code>path</code> parameters resolve against it. <code>ndim_in</code>/<code>ndim_out</code>
+are the dimensionalities of the referenced coordinate systems, where known.
+<code>fields</code> says how the displacement/coordinate fields it opens are read.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.sources.scene.open_scene"></a>
+    <div class="doc doc-contents first">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.sources.warp.open_warp"></a>
+    <div class="doc doc-contents first">
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.registration.solve"></a>
+    <div class="doc doc-contents first">
+
+        <p>Fit <code>u</code> level by level (<code>fixed[i]</code> against <code>moving[i]</code>, coarse to fine).</p>
+<p><code>affine</code> (4x4 or 3x4) maps fixed physical points to moving physical points; the
+moving image is sampled at <code>affine(p + u(p))</code>. The control grid spans <code>box</code> (the
+fixed image's physical extent, <code>(low, high)</code>); points outside it use the nearest
+edge value. Returns <code>snapshots</code> fields evenly spaced over the iterations, from the
+starting field to the final one (just the final one when <code>snapshots</code> is 1).</p>
+<p><code>init</code> starts from a field given at the first level's control points, <code>(z, y, x,
+3)</code>, rather than from zero; <code>ranges</code> normalizes the images with the given
+intensity ranges (fixed, moving) rather than the first level's percentiles, so blocks
+of one image are all scaled alike; <code>label</code> names the fit in the log.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.registration.Settings"></a>
+    <div class="doc doc-contents first">
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.registration.find_affine"></a>
+    <div class="doc doc-contents first">
+
+        <p>The fixed-to-moving affine (4x4, physical units) to start from when none is given,
+as the browser page's <code>affine.ts</code> finds it. The images' intensity moments are
+matched first, centre to centre and principal axis to principal axis, which leaves
+each axis's sign open: of the orientations that do not mirror the image, the best
+correlated is kept. A mirror image (one axis reversed) is not searched for: on a nearly
+symmetric specimen (a brain) it correlates as well as the right rotation, so the images
+cannot tell, and a fit cannot reach one from a rotation; give it as an affine. Then the 12 numbers are fitted by gradient ascent on the
+normalized cross-correlation, on a copy of at most <code>MAX_FIT_VOXELS</code> voxels after a
+coarser one. The moments assume both images show the same whole object. Also returns
+the correlation with no affine, after the moments and after the fit.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.sources.register.open_register"></a>
+    <div class="doc doc-contents first">
+
+
+    </div>
+
+</div><h2 id="stitching">Stitching<a class="headerlink" href="#stitching" title="Permanent link">&para;</a></h2>
+<p>Tiles stitched by interest points and RANSAC, and fused, behind <code>stitch://</code> and the
+browser's stitch page.</p>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.stitching.StitchParams"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="pydantic.BaseModel">BaseModel</span></code></p>
+
+
+
+        <p>How tiles are stitched: the interest points, their matching, RANSAC and the fit.</p>
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.stitching.detect"></a>
+    <div class="doc doc-contents first">
+
+        <p>Bright blobs in <code>block</code>: local maxima of a difference of Gaussians (sigma and
+2^(1/4) sigma, BigStitcher's), at least <code>threshold</code> of the intensity range [lo, hi],
+to subvoxel precision. Returns <code>(n, 3)</code> voxel positions in <code>block</code>; none within a
+voxel of its faces (their maxima are cut off).</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.stitching.match"></a>
+    <div class="doc doc-contents first">
+
+        <p>Candidate matches <code>(i, j)</code> of points <code>a[i]</code> and <code>b[j]</code>: <code>b[j]</code> is the point
+whose descriptors come closest to one of <code>a[i]</code>'s, <code>significance</code> times closer than
+any other point's, and the other way round.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.stitching.ransac"></a>
+    <div class="doc doc-contents first">
+
+        <p>The <code>model</code> that most candidate matches <code>p[i] -&gt; q[i]</code> agree with to within
+<code>epsilon</code>, from <code>iterations</code> random minimal samples, refitted to its inliers until
+they stop changing. Returns the model (<code>None</code> if too few agree) and the inliers.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.stitching.optimize"></a>
+    <div class="doc doc-contents first">
+
+        <p>Every tile's correction (applied after its stage placement) fitted to all the kept
+matches at once: link <code>(i, j, p, q)</code> asks tile <code>i</code>'s points <code>p</code> to meet tile
+<code>j</code>'s <code>q</code> (both placed by their stage positions). Each round refits each tile to
+where its neighbours put their ends of its matches. Of each group of tiles that links
+join, one stays where it is: <code>fixed</code> in its group, the first tile in the others.
+Returns the corrections and which tiles were joined to another.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.stitching.register"></a>
+    <div class="doc doc-contents first">
+
+        <p>Matches, RANSAC and the global fit from each overlapping pair's interest points
+(<code>points[k]</code>: pair <code>k</code> of <code>overlaps</code>, both tiles' points in scene coordinates at
+their stage placement). JSON-able: per pair the candidates, inliers and errors; per
+tile its correction and its final placement.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.stitching.fuse"></a>
+    <div class="doc doc-contents first">
+
+        <p>Voxels <code>[out_lo, out_hi)</code> of the fused volume on <code>grid</code>: each tile sampled
+(trilinearly) where its placement puts it, from <code>blocks[t]</code> (its level's voxels from
+a start, or <code>None</code> where it has none of the region), averaged with weights that fall
+off near its edges, so the seams do not show.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.stitching.tiles_from_bdv"></a>
+    <div class="doc doc-contents first">
+
+        <p>The tiles of one channel of a BigStitcher project (its XML text; <code>base</code>: the URL
+of the folder it is in), each with its stage placement: every view transform but the
+outermost ones named <code>drop</code> (the stitching found before, kept as the reference). Reads
+projects whose images are OME-Zarr (BigStitcher-Spark's <code>bdv.multimg.zarr</code> loader),
+one group per setup and time point.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.sources.stitch.open_stitch"></a>
+    <div class="doc doc-contents first">
+
+
+    </div>
+
+</div><h2 id="tracking">Tracking<a class="headerlink" href="#tracking" title="Permanent link">&para;</a></h2>
+<p>An object followed through a time series of labels by its overlap, frame by frame, and
+through its divisions into its likely daughters (new objects appearing near where it was: a
+guess, not something the labels record), behind the browser's track page and
+<code>examples/track_nucleus.py</code>.</p>
+
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.tracking.lineage"></a>
+    <div class="doc doc-contents first">
+
+        <p>The object labelled <code>label</code> at frame <code>t0</code> followed forward and back (<code>follow</code>),
+and forward through its divisions: the daughters of each nucleus that collapses and is
+lost are followed too. Returns branches (frame -&gt; record), the first the object's own;
+each daughter's first record says <code>mother</code>, the branch it came from.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.tracking.follow"></a>
+    <div class="doc doc-contents first">
+
+        <p>The object labelled <code>label</code> at frame <code>t0</code>, through <code>frames</code> (counting up or down
+from <code>t0</code>); <code>read(t, lo, hi)</code> gives a frame's labels over a box of the level. Yields
+<code>(t, record)</code> for <code>t0</code> and each frame it is found in, until it is lost; a record
+says <code>divided</code> when its volume fell to <code>DIVIDED</code> of the frame before's.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.tracking.step"></a>
+    <div class="doc doc-contents first">
+
+        <p>The object labelled <code>label</code> in <code>prev</code>, in the next frame <code>nxt</code> (the same box of
+the level, from <code>start</code>): the label it overlaps most there, measured, with the overlap
+(its share of the object's voxels). <code>None</code> if under <code>MIN_OVERLAP</code>.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.tracking.newborns"></a>
+    <div class="doc doc-contents first">
+
+        <p>Labels of <code>nxt</code> that are new: covered less than <code>NEWBORN</code> by any one label of the
+frame before, <code>prev</code> (the same box, from <code>start</code>); within <code>within</code> (physical units)
+of <code>centre</code> (level voxels) and of <code>min_volume</code> or more. After a mitosis, which hides
+the nucleus for a few frames, these are likely its daughters (a guess: nothing says which
+nucleus a new one came from). Nearest first.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.tracking.daughters"></a>
+    <div class="doc doc-contents first">
+
+        <p>Up to two likely daughters of <code>mother</code> (a record, see <code>mother_of</code>): the first new
+nuclei (<code>newborns</code>) near it, looked for from frame
+<code>lost</code> for <code>gap</code> frames in a box <code>within</code> around it: <code>(frame, record)</code> where each
+first appears.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.tracking.mother_of"></a>
+    <div class="doc doc-contents first">
+
+        <p>If a branch lost at frame <code>lost</code> had collapsed first (its last volume <code>DIVIDED</code> of
+its largest in the dozen frames before, or less), the record at that largest: the
+nucleus that went into mitosis. <code>None</code> if it was just lost.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+
+<a id="chunkmirage.tracking.measure"></a>
+    <div class="doc doc-contents first">
+
+        <p>Label <code>label</code> in <code>block</code> (whose voxel 0 is <code>start</code> of the level): its volume
+(voxels times their size), centroid and bounding box (level voxels, <code>[lo, hi)</code>), and
+whether it touches the block's faces (the block may not hold all of it).</p>
+
+
+    </div>
+
+</div><h2 id="frontends">Frontends<a class="headerlink" href="#frontends" title="Permanent link">&para;</a></h2>
+
+
+<div class="doc doc-object doc-class">
+
+
+
+<a id="chunkmirage.frontends.base.Frontend"></a>
+    <div class="doc doc-contents first">
+            <p class="doc doc-class-bases">
+              Bases: <code><span title="abc.ABC">ABC</span></code></p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-children">
+
+
+
+
+
+
+
+
+
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.frontends.base.Frontend.resolve" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">resolve</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#chunkmirage.frontends.base.Frontend.resolve" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Map a request path (relative to the dataset+format prefix) to metadata or a chunk.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.frontends.base.Frontend.encode" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">encode</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">block</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-abstractmethod"><code>abstractmethod</code></small>
+  </span>
+
+<a href="#chunkmirage.frontends.base.Frontend.encode" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Encode the (edge-clipped) block for chunk <code>index</code> in this format.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.frontends.base.Frontend.resolve_range" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">resolve_range</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">start</span><span class="p">,</span> <span class="n">stop</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.frontends.base.Frontend.resolve_range" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>A request for bytes <code>[start, stop)</code> of <code>path</code>, for files read by HTTP Range
+requests; <code>None</code> serves the whole file as <code>resolve</code> does.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.frontends.base.Frontend.compute" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">compute</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">req</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.frontends.base.Frontend.compute" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>The body for <code>req</code>: its chunk, encoded. Frontends that serve something made from
+the data rather than its chunks (meshes) override this.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.frontends.base.Frontend.listing" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">listing</span><span class="p">(</span><span class="n">pipeline</span><span class="p">,</span> <span class="n">path</span><span class="p">)</span></code>
+
+<a href="#chunkmirage.frontends.base.Frontend.listing" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>What a directory listing of <code>path</code> shows: the group's metadata keys and one
+directory per level, or a level's metadata keys (never its chunks); None if <code>path</code>
+is neither, or the format has no directories to list.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.frontends.base.Frontend.relative_scales" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">relative_scales</span><span class="p">(</span><span class="n">pipeline</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#chunkmirage.frontends.base.Frontend.relative_scales" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Downsampling factor of every level relative to s0, per C-order axis.</p>
+
+
+    </div>
+
+</div>
+
+<div class="doc doc-object doc-function">
+
+
+<h2 id="chunkmirage.frontends.base.Frontend.pad_to_full" class="doc doc-heading">
+            <code class="highlight language-python"><span class="n">pad_to_full</span><span class="p">(</span><span class="n">info</span><span class="p">,</span> <span class="n">index</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span></code>
+
+  <span class="doc doc-labels">
+      <small class="doc doc-label doc-label-staticmethod"><code>staticmethod</code></small>
+  </span>
+
+<a href="#chunkmirage.frontends.base.Frontend.pad_to_full" class="headerlink" title="Permanent link">&para;</a></h2>
+
+
+    <div class="doc doc-contents ">
+
+        <p>Zarr requires full-size chunks even at the edge; pad with <code>fill</code>.</p>
+
+
+    </div>
+
+</div>
+
+
+
+  </div>
+
+    </div>
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

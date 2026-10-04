@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Stitch in the Browser</title>
+<style>:root{--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark;--bg:#0e1014;--panel:#161a20;--line:#262c36;--fg:#e7e9ec;--muted:#939cab;--faint:#5d6675;--accent:#7ab0ff;--accent-ink:#081225;--in:#45f07a;--out:#ff5a5a}*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:var(--bg);color:var(--fg);grid-template-columns:minmax(300px,350px) 1fr;font:13px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;display:grid}aside{background:var(--panel);border-right:1px solid var(--line);flex-direction:column;gap:16px;padding:18px 16px;display:flex;overflow-y:auto}a{color:var(--accent);text-decoration:none}h1{margin:0;font-size:15px;font-weight:650}p{margin:0}.muted{color:var(--muted)}.faint{color:var(--faint);font-size:12px}.label{letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-size:11px;font-weight:600}pre{border:1px solid var(--line);background:var(--bg);white-space:pre-wrap;word-break:break-all;border-radius:6px;margin:6px 0 0;padding:8px;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}button{background:var(--accent);color:var(--accent-ink);font:inherit;cursor:pointer;border:0;border-radius:6px;padding:6px 10px;font-weight:650}.state{color:var(--fg)}.counts{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12px}.controls{flex-direction:column;gap:9px;display:flex}.control{grid-template-columns:1fr auto;align-items:center;gap:2px 8px;display:grid}.control input[type=range]{width:100%;accent-color:var(--accent);grid-column:1/-1}.control output{font-variant-numeric:tabular-nums;color:var(--muted)}.control select{min-width:0;max-width:100%;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:4px;padding:2px 4px}.control[title] span{-webkit-text-decoration:underline dotted var(--faint);text-decoration:underline dotted var(--faint);text-underline-offset:3px}.summary{font-size:13px}.summary b{font-weight:650}table{border-collapse:collapse;font-variant-numeric:tabular-nums;width:100%;font-size:12px}th{text-align:right;color:var(--faint);padding:2px 3px;font-weight:500}th:first-child,td:first-child{text-align:left}td{text-align:right;border-top:1px solid var(--line);padding:2px 3px}tr.dropped td{color:var(--faint)}.legend{color:var(--muted);gap:4px;font-size:12px;display:grid}.legend span{align-items:center;gap:7px;display:flex}.swatch{border-radius:2px;flex:none;width:10px;height:10px}main{background:#000;min-width:0;position:relative}main iframe{border:0;width:100%;height:100%;position:absolute;inset:0}.empty{text-align:center;color:var(--faint);place-content:center;padding:24px;display:grid;position:absolute;inset:0}.captions{pointer-events:none;grid-template-columns:1fr 1fr 1fr;display:grid;position:absolute;bottom:14px;left:0;right:0}.captions span{text-align:center;color:#d7dbe0;background:#000000a6;border-radius:4px;justify-self:center;max-width:92%;padding:3px 9px;font-size:12px}[hidden]{display:none!important}@media (max-width:720px){body{grid-template-rows:auto 70vh;grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}}</style>
+  <script type="module" crossorigin src="./assets/stitch-B-pb9HDE.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="modulepreload" crossorigin href="./assets/chunkmirage.schema-C17jJkF5.js">
+  <link rel="modulepreload" crossorigin href="./assets/engine-CEBqtyxl.js">
+</head>
+<body>
+<aside>
+  <p><a href="./">← All demos</a></p>
+  <div>
+    <h1>Six tiles stitched by RANSAC in your browser, with every knob live</h1>
+  </div>
+  <p class="muted">Interest points are found where the tiles overlap, matched between neighbours
+    by the pattern of their nearest neighbours, and RANSAC keeps the matches that agree on one
+    shift (or rigid, or affine motion). Then every tile is fitted to all the kept matches at
+    once, and the fused volume is computed chunk by chunk as you look. Change a setting and it
+    all runs again: lower <i>significance</i> to let doubtful matches through and watch RANSAC
+    reject them.</p>
+  <p class="faint">Data: <a id="xml" href="">BigStitcher-Spark's stitching example</a>, a larval
+    fly CNS in 2 × 3 tiles of 512 × 512 × 86 (three channels), with BigStitcher's own result
+    to compare.</p>
+  <section class="controls" id="controls" hidden></section>
+  <section id="result" hidden>
+    <div class="label">Result</div>
+    <p class="summary" id="summary"></p>
+    <table id="pairs"></table>
+  </section>
+  <section class="legend">
+    <span><i class="swatch" style="background: #ff4fd8"></i><i class="swatch" style="background: #45f07a"></i>Neighbouring tiles, overlaid: white where they agree</span>
+    <span><i class="swatch" style="background: var(--in)"></i>RANSAC's inliers: lines from one tile's point to its match's</span>
+    <span><i class="swatch" style="background: var(--out)"></i>Candidate matches RANSAC rejected</span>
+  </section>
+  <section>
+    <div class="label">Status</div>
+    <p class="state" id="state">Starting…</p>
+    <p class="counts" id="counts"></p>
+  </section>
+  <section>
+    <div class="label">The same from Python</div>
+    <pre id="command"></pre>
+    <p style="margin-top: 6px"><button id="copy" type="button">Copy</button></p>
+  </section>
+  <p class="faint">Everything here runs in this browser: the tiles are read from their public
+    bucket, and every step, from the interest points to each fused chunk, is chunkmirage's own
+    Python (chunkmirage.stitching), run by Pyodide in web workers. Nothing is uploaded.</p>
+</aside>
+<main>
+  <div class="empty" id="empty">Loading…</div>
+  <iframe id="ng" title="Neuroglancer" hidden></iframe>
+  <div class="captions" id="captions" hidden>
+    <span>At the stage positions, and the matches between neighbours</span>
+    <span>Placed by the fit: inliers meet</span>
+    <span>Fused, computed as you look</span>
+  </div>
+</main>
+</body>
+</html>

@@ -1,0 +1,1295 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spoof chunked array formats over HTTP with on-the-fly processing.">
+      
+      
+      
+        <link rel="canonical" href="https://yuriyzubov.github.io/chunkmirage/reference/ops/">
+      
+      
+        <link rel="prev" href="../../concepts/formats/">
+      
+      
+        <link rel="next" href="../api/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Ops - chunkmirage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#ops-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="chunkmirage" class="md-header__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chunkmirage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Ops
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="chunkmirage" class="md-nav__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    chunkmirage
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://yuriyzubov.github.io/chunkmirage/browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo gallery (in your browser) ↗
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipelines, ops and halos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/interactivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../concepts/formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_6" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cli-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI syntax
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing & doc policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#cli-syntax" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        CLI syntax
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yuriyzubov/chunkmirage/edit/main/docs/reference/ops.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="ops-reference">Ops reference<a class="headerlink" href="#ops-reference" title="Permanent link">&para;</a></h1>
+<p>Run <code>chunkmirage ops</code> or <code>GET /api/ops</code> for the live list with JSON schemas. This page must
+list every registered op; <code>tests/test_docs.py</code> enforces it.</p>
+<p>Ops that make masks (<code>threshold</code>, <code>morphology</code>, <code>contacts</code>) and labels (<code>label</code>, <code>spots</code>)
+say so (<code>output_kind</code>), and viewers show what they make as segmentations.</p>
+<p>Every parameter carries a description (pydantic <code>Field(description=...)</code>) that the control
+page shows under the control and <code>GET /api/ops</code> returns in the JSON schema. Add one to any
+new op; <code>tests/test_docs.py</code> requires it.</p>
+<table>
+<thead>
+<tr>
+<th>op</th>
+<th>parameter</th>
+<th>default</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>threshold</code></td>
+<td><code>low</code></td>
+<td>0</td>
+<td>lower bound (inclusive), in the source's intensity units</td>
+</tr>
+<tr>
+<td></td>
+<td><code>high</code></td>
+<td>none</td>
+<td>upper bound (exclusive); leave empty for no upper bound</td>
+</tr>
+<tr>
+<td></td>
+<td><code>value</code></td>
+<td>1</td>
+<td>label written for passing voxels; output is uint8</td>
+</tr>
+<tr>
+<td><code>cast</code></td>
+<td><code>dtype</code></td>
+<td>uint8</td>
+<td>target numpy dtype name</td>
+</tr>
+<tr>
+<td></td>
+<td><code>clip</code></td>
+<td>true</td>
+<td>clip to the integer range first to avoid wrap-around</td>
+</tr>
+<tr>
+<td><code>scale</code></td>
+<td><code>factor</code></td>
+<td>1.0</td>
+<td>multiply (contrast); output float32</td>
+</tr>
+<tr>
+<td></td>
+<td><code>offset</code></td>
+<td>0.0</td>
+<td>then add (brightness)</td>
+</tr>
+<tr>
+<td><code>gaussian</code></td>
+<td><code>sigma</code></td>
+<td>1.0</td>
+<td>blur width in voxels; halo = <code>ceil(sigma × truncate)</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>truncate</code></td>
+<td>3.0</td>
+<td>kernel radius in sigmas; rarely changed</td>
+</tr>
+<tr>
+<td><code>uniform</code></td>
+<td><code>size</code></td>
+<td>3</td>
+<td>edge of the averaging cube in voxels; halo = <code>size // 2 + 1</code></td>
+</tr>
+<tr>
+<td><code>dog</code></td>
+<td><code>sigma</code></td>
+<td>2.0</td>
+<td>difference of Gaussians: enhances blobs of about this size; halo = <code>ceil(3 × sigma × ratio)</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>ratio</code></td>
+<td>1.6</td>
+<td>larger blur = <code>sigma × ratio</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>gain</code></td>
+<td>4.0</td>
+<td>scales the difference into 0..255 (output uint8, 128 = zero)</td>
+</tr>
+<tr>
+<td><code>diff</code></td>
+<td><code>axis</code></td>
+<td>0</td>
+<td>change along one axis: each voxel minus the one <code>lag</code> steps before it on <code>axis</code> (0: time in a <code>t, y, x</code> series); output float32; halo = <code>lag</code> on that axis only; the first <code>lag</code> steps compare against the first</td>
+</tr>
+<tr>
+<td></td>
+<td><code>lag</code></td>
+<td>1</td>
+<td>how many steps back to compare with</td>
+</tr>
+<tr>
+<td><code>gradient</code></td>
+<td><code>axes</code></td>
+<td>last three</td>
+<td>rate of change along each axis listed (counted from the first: <code>[1, 2]</code> for latitude and longitude of a <code>time, lat, lon</code> series), per unit of the axes (the level's voxel size): central differences, one channel each on a new leading <code>c</code> axis; output float32; halo = 1 + <code>ceil(3 × sigma)</code> on those axes, and only the interior is returned (a valid convolution)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>sigma</code></td>
+<td>0</td>
+<td>smoothing first, in voxels along those axes (a Gaussian derivative), so noise a voxel or two across does not point every voxel its own way; 0 = none</td>
+</tr>
+<tr>
+<td><code>downsample</code></td>
+<td><code>factor</code></td>
+<td>2, 2, 2</td>
+<td>voxels per output voxel along each of the last axes; the grid changes with it (voxels <code>factor</code> times bigger, the shape divided and rounded up, each voxel's position the centre of its block); how a pipeline makes the coarser levels of an op with an input voxel size</td>
+</tr>
+<tr>
+<td></td>
+<td><code>mode</code></td>
+<td>auto</td>
+<td><code>mean</code> of each block (integers rounded), <code>mode</code> (its most common value), or <code>auto</code>: mode for labels and masks, mean otherwise</td>
+</tr>
+<tr>
+<td><code>morphology</code></td>
+<td><code>operation</code></td>
+<td>open</td>
+<td><code>open</code>, <code>close</code>, <code>erode</code>, <code>dilate</code> on a mask (input &gt; 0); output uint8</td>
+</tr>
+<tr>
+<td></td>
+<td><code>radius</code></td>
+<td>2</td>
+<td>spherical structuring element radius in voxels; halo = <code>2 × radius + 1</code></td>
+</tr>
+<tr>
+<td><code>label</code></td>
+<td><code>min_size</code></td>
+<td>0</td>
+<td>connected components of a mask, output uint32 segment ids; drop components smaller than this</td>
+</tr>
+<tr>
+<td></td>
+<td><code>connectivity</code></td>
+<td>1</td>
+<td>1 = 6-connected, 2 = 18, 3 = 26</td>
+</tr>
+<tr>
+<td><code>spots</code></td>
+<td><code>sigma</code></td>
+<td>1.0</td>
+<td>bright diffraction-limited spots (single mRNAs in smFISH, EASI-FISH): difference of Gaussians, local maxima above <code>threshold</code>, each drawn as a small ball whose uint32 id comes from its position, so it is the same whichever chunk finds it; spot size in y-x voxels; needs a <code>z, y, x</code> volume (<code>select</code> a channel)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>sigma_z</code></td>
+<td>0.6</td>
+<td>spot size in z voxels</td>
+</tr>
+<tr>
+<td></td>
+<td><code>threshold</code></td>
+<td>10</td>
+<td>least difference-of-Gaussians response, image intensity units</td>
+</tr>
+<tr>
+<td></td>
+<td><code>separation</code></td>
+<td>2</td>
+<td>spots closer than this (y-x voxels) are one</td>
+</tr>
+<tr>
+<td></td>
+<td><code>radius</code></td>
+<td>1</td>
+<td>ball drawn per spot, y-x voxels (0 marks one voxel)</td>
+</tr>
+<tr>
+<td><code>slope</code></td>
+<td><code>z_factor</code></td>
+<td>1.0</td>
+<td>slope of an elevation model in degrees (0 flat, 90 a cliff), on the last two axes, from each level's pixel spacing (<code>for_level</code>); output float32; halo 1; elevation units per unit of the spacing (1 when both are metres)</td>
+</tr>
+<tr>
+<td><code>hillshade</code></td>
+<td><code>azimuth</code></td>
+<td>315</td>
+<td>shaded relief, the terrain lit by a distant sun from this direction (degrees clockwise from the top of the image), local illumination only (no cast shadows); output uint8, 1 unlit to 255 facing the sun, 0 where the elevation is NaN; halo 1</td>
+</tr>
+<tr>
+<td></td>
+<td><code>altitude</code></td>
+<td>45</td>
+<td>the sun's height above the horizon, degrees</td>
+</tr>
+<tr>
+<td></td>
+<td><code>z_factor</code></td>
+<td>1.0</td>
+<td>as for <code>slope</code>; above 1 exaggerates relief</td>
+</tr>
+<tr>
+<td><code>contacts</code></td>
+<td><code>radius</code></td>
+<td>3.0</td>
+<td>contact sites between the first two channels of a <code>stack://</code> source: voxels within this many voxels (Euclidean) of both structures; output uint8 mask; halo = <code>radius + 1</code></td>
+</tr>
+<tr>
+<td></td>
+<td><code>distance</code></td>
+<td>none</td>
+<td>the reach in the data's units (nm) instead: each level counts it in its own voxels, so a contact means the same at every zoom; halo planned on the finest level</td>
+</tr>
+<tr>
+<td></td>
+<td><code>a_low</code></td>
+<td>128</td>
+<td>values at or above this in the first channel are the first structure (128 for a uint8 probability map, 1 for a segmentation)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>b_low</code></td>
+<td>128</td>
+<td>the same for the second channel</td>
+</tr>
+<tr>
+<td><code>normalized_difference</code></td>
+<td><code>pair</code></td>
+<td>0, 1</td>
+<td><code>(a - b) / (a + b)</code> of two channels of a <code>stack://</code> source, float32: the indices remote sensing reads plants, water and burn scars from (NDVI, NDWI, NBR); NaN where a band is zero or less</td>
+</tr>
+<tr>
+<td></td>
+<td><code>minus</code></td>
+<td>none</td>
+<td>two more channels whose index is subtracted from the first pair's: a change between dates (burn severity, dNBR, is the NBR before minus the NBR after)</td>
+</tr>
+<tr>
+<td></td>
+<td><code>offset</code></td>
+<td>0</td>
+<td>added to every channel first, to make reflectances of stored numbers</td>
+</tr>
+<tr>
+<td></td>
+<td><code>nodata</code></td>
+<td>none</td>
+<td>a stored value meaning no data: the index there is NaN</td>
+</tr>
+<tr>
+<td></td>
+<td><code>floor</code></td>
+<td>0</td>
+<td>where a pair sums to less than this, its index is noise (water) and NaN</td>
+</tr>
+</tbody>
+</table>
+<p><code>label</code> numbers components <strong>per chunk</strong> (salted by chunk position so ids never collide).
+An object spanning chunks therefore gets one colour per chunk. That is the honest per-chunk
+preview of a global operation; see <a href="../../faq/#where-does-it-fall-short">FAQ</a>.</p>
+<p>Ops that need to know <em>where</em> a block sits override <code>apply_at(block, box)</code> instead of
+<code>apply(block)</code>; <code>label</code> uses it for the salt, <code>spots</code> for its ids.</p>
+<p><code>examples/fish_spots.py</code> runs <code>spots</code> on both FISH channels of a public EASI-FISH round of
+a whole fly central brain (3.4 gigavoxels per channel), next to the raw channels, with the
+threshold editable at a prompt. Only the chunks on screen are searched, and a chunk's spots
+are identical to those found in one pass over a larger block.</p>
+<p>Ops over several images take the channels of a
+<a href="../../concepts/formats/#stack-sources-several-images-as-one-arrays-channels"><code>stack://</code> source</a>
+and return an array without the channel axis, as <code>contacts</code> does (its <code>output_info</code> drops the
+axis). The pipeline reads every channel and pads only the spatial axes by the halo; ops after
+it in the same stage see the plain spatial block.</p>
+<p>None of the built-ins cache their output by default (<code>cache=False</code>); a pipeline turns it on
+for one op with <code>"cache": true</code> in its spec (<a href="../../concepts/caching/#why-not-cache-every-stage">caching</a>).
+Everything except <code>threshold</code>,
+<code>cast</code>, <code>scale</code>, <code>diff</code>, <code>slope</code> and <code>hillshade</code> needs the <code>ops</code> extra (scipy).</p>
+<p><code>slope</code> on NASA's 5 m south-pole elevation of the Moon (the ridge between Shackleton and de
+Gerlache craters, LOLA, Barker et al.) equals the slope USGS publishes with it, to 0.0°
+(median and 95th percentile over a 512 × 512 region at full resolution); the gallery's Moon
+card draws ground under a chosen slope over it, and the relief lit by a sun you move.</p>
+<p><code>diff</code> along time is the view a hurricane's cold wake or a solar flare shows up in: each
+day's sea temperature minus the day before's (<code>examples/hurricane_wakes.py</code>, and the
+gallery's hurricanes card), each 6-minute image of the sun minus the one before
+(<code>examples/solar_flares.py</code>, the running difference solar physicists use).</p>
+<h2 id="cli-syntax">CLI syntax<a class="headerlink" href="#cli-syntax" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>--op threshold:low=120,high=200
+--op '{"op": "gaussian", "sigma": 2}'
+--op gaussian:sigma=2,cache=true
+</code></pre></div>
+<p>Values are parsed as JSON where possible, else strings. Repeat <code>--op</code> to chain.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

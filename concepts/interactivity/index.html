@@ -1,0 +1,1241 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spoof chunked array formats over HTTP with on-the-fly processing.">
+      
+      
+      
+        <link rel="canonical" href="https://yuriyzubov.github.io/chunkmirage/concepts/interactivity/">
+      
+      
+        <link rel="prev" href="../caching/">
+      
+      
+        <link rel="next" href="../formats/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Interactivity - chunkmirage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#interactivity-changing-pipelines-while-you-look" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="chunkmirage" class="md-header__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chunkmirage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interactivity
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="chunkmirage" class="md-nav__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    chunkmirage
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://yuriyzubov.github.io/chunkmirage/browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo gallery (in your browser) ↗
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipelines, ops and halos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#changing-the-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changing the pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-the-viewer-refetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making the viewer refetch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sharing-on-your-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sharing on your network
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transforms-on-the-fly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transforms on the fly
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-your-own-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For your own tooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing & doc policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#changing-the-pipeline" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Changing the pipeline
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#making-the-viewer-refetch" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Making the viewer refetch
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sharing-on-your-network" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sharing on your network
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#transforms-on-the-fly" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Transforms on the fly
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#for-your-own-tooling" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        For your own tooling
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yuriyzubov/chunkmirage/edit/main/docs/concepts/interactivity.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="interactivity-changing-pipelines-while-you-look">Interactivity: changing pipelines while you look<a class="headerlink" href="#interactivity-changing-pipelines-while-you-look" title="Permanent link">&para;</a></h1>
+<p>The point of chunkmirage is to <em>see</em> the effect of a change immediately. That needs two
+things: a way to change the pipeline, and a way to make the viewer refetch.</p>
+<h2 id="changing-the-pipeline">Changing the pipeline<a class="headerlink" href="#changing-the-pipeline" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>how</th>
+<th>where</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>control page</td>
+<td><code>http://localhost:8000/ui</code></td>
+<td>sliders and fields generated from each op's JSON schema; add/remove ops; Neuroglancer embedded in the page or opened in a new tab. A page for developing and debugging pipelines, not a dashboard: applications build their own interfaces on the REST API</td>
+</tr>
+<tr>
+<td>REST</td>
+<td><code>PUT /api/datasets/{name}</code></td>
+<td>any language, <code>curl</code>, notebooks, agents</td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>registry.add(name, spec)</code> / <code>Viewer.set_ops</code></td>
+<td>in-process, e.g. from a notebook running the server in a thread</td>
+</tr>
+</tbody>
+</table>
+<p>Every edit bumps the registry version and fires <code>GET /api/events</code> (Server-Sent Events), so
+several control surfaces stay in sync. Only the changed stage and its dependents recompute;
+see <a href="../caching/">Caching</a>.</p>
+<h2 id="making-the-viewer-refetch">Making the viewer refetch<a class="headerlink" href="#making-the-viewer-refetch" title="Permanent link">&para;</a></h2>
+<p>Neuroglancer (and most viewers) cache chunks by URL and expose no "invalidate" call. So
+chunkmirage embeds the pipeline digest in every source URL:</p>
+<div class="highlight"><pre><span></span><code>zarr3://http://localhost:8000/thr/@75f296149b33/zarr3
+</code></pre></div>
+<p>A changed pipeline is a changed URL, and a changed URL is a cache miss. Three ways to get
+the new URL into the viewer, from least to most convenient:</p>
+<ol>
+<li><strong>Paste it.</strong> <code>PUT</code> responses and <code>/api/events</code> carry the new <code>sources</code>. Paste into the
+   layer's source field. Camera preserved; manual.</li>
+<li><strong>Let the control page drive a viewer.</strong> <code>/ui</code> embeds Neuroglancer in the page (the
+   hosted <code>neuroglancer-demo.appspot.com</code> allows framing) or opens it in a new tab, and on
+   every change navigates it to a fresh state URL. Cross-origin navigation is allowed, so
+   this works with appspot. But cross-origin <em>reading</em> is not, so the current camera cannot
+   be copied into the new state: <strong>the view resets on each push</strong>. Fine for demos, tiresome
+   for real work.</li>
+<li><strong>Use the Python viewer.</strong> <code>chunkmirage serve … --python-viewer</code> (or
+   <code>chunkmirage.viewer.Viewer</code> in code) starts a
+   <a href="https://github.com/google/neuroglancer/tree/master/python">python-neuroglancer</a> viewer
+   whose layers subscribe to the registry. An edit swaps only that layer's source URL inside
+   a state transaction; Neuroglancer refetches that layer and <strong>keeps camera, other layers
+   and shader settings</strong>. With <code>--ng-client appspot</code> the client code is fetched from the
+   hosted demo site (the Python server proxies it), so you are running the same build as
+   appspot, just with state sync. This is the recommended interactive mode. The control
+   page detects a running python viewer (the server reports it as <code>viewer_url</code> in <code>GET /</code>)
+   and embeds it by default, so sliders and viewer sit on one page with the camera
+   preserved. The viewer's dimensions come from the first dataset by name, or from
+   <code>Viewer.set_dimensions(name)</code>: spatial axes first, then the rest (time last), with x, y
+   and z displayed (data with none named so, such as <code>time, lat, lon</code>, displays its last
+   three in their place: the map, with time to scroll through; <code>y, x</code> images over another
+axis, such as <code>time, y, x</code> frames of the sun, scroll through that axis as z). <code>Viewer.rename_dimensions(name, {"c'": "c^"})</code> renames a dataset's
+   dimensions in its layer (here, the channel axis becomes a shader channel); the rename
+   is rebuilt from the dataset's axes on every edit. A source that says how to show its
+   channels (a <code>MultiscaleSource</code> with a <code>shader</code>, as <code>register://</code>'s <code>show=pair</code> and
+   <code>show=field</code> are) gets that shader and the rename by itself, here and in the printed
+   link. <code>Viewer.hosted_link()</code> gives the
+   current state as an appspot link: a snapshot that does not follow later edits but
+   needs no python server.</li>
+</ol>
+<p><strong>Animating: a time axis, not new URLs.</strong> A new URL is a cache miss for everything that
+layer has on screen, so it goes blank until the new chunks arrive; stepping a parameter
+faster than a screenful computes never shows a finished frame. For a parameter you want
+to sweep, serve the sweep as a <code>t</code> axis instead (as
+<a href="../formats/#warp-sources-procedural-deformations"><code>warp://…&amp;frames=N</code></a> does, and
+<code>register://…&amp;frames=N</code> for the steps of a solve) and play it
+with Neuroglancer's playback (click the dimension in the top bar, or set <code>velocity</code> in the
+state). Nothing is invalidated: each frame is fetched once, then comes from the browser's
+and the server's caches.</p>
+<p>Two browser rules bite when the server is on a private network address (<code>10.x</code>,
+<code>192.168.x</code>) and the viewer is a public https site such as appspot:</p>
+<ul>
+<li><strong>Local / Private Network Access</strong> (Chrome): a public site needs permission to reach a
+  private address. Loopback is exempt, which is why <code>localhost</code> always works. The server
+  answers the preflight with <code>Access-Control-Allow-Private-Network: true</code>, and the control
+  page delegates the permission to the embedded viewer with
+  <code>allow="local-network-access"</code>. Chrome may still show a one-time permission prompt; accept
+  it. Firefox does not enforce this yet.</li>
+<li><strong>Certificate trust is per origin.</strong> Accepting the self-signed certificate at
+  <code>https://localhost:8000</code> does not cover <code>https://10.101.10.98:8000</code>. Open the exact host
+  the chunk URLs use, once, in each browser.</li>
+</ul>
+<p>Mixed-content rules decide what can be embedded where: an <code>https</code> control page (with
+<code>--https</code>) cannot embed the <code>http</code> python viewer, and an <code>http</code> control page on a
+non-localhost address cannot have the embedded <code>https</code> appspot viewer fetch its chunks. The
+page explains which case you are in and falls back to "Open in new tab".</p>
+<h2 id="sharing-on-your-network">Sharing on your network<a class="headerlink" href="#sharing-on-your-network" title="Permanent link">&para;</a></h2>
+<p><code>chunkmirage serve</code> binds to all interfaces by default and prints URLs using the machine's
+network address, so anyone on the same network can open the control page and the python
+viewer:</p>
+<div class="highlight"><pre><span></span><code>control UI:    http://10.123.4.56:8000/ui
+python viewer: http://10.123.4.56:41595/v/&lt;token&gt;/
+</code></pre></div>
+<p>Anyone who can reach the server can also edit its pipelines through <code>/api</code>. On a shared
+network, start it with <code>--token &lt;secret&gt;</code> (or <code>CHUNKMIRAGE_TOKEN</code>): <code>/api/*</code> then needs the
+token, and the printed control-page link carries it (<code>/ui?token=...</code>), which the page sends
+on with every call. The datasets stay open to viewers.</p>
+<p>The python viewer works over plain <code>http</code> from anywhere on the network because it serves
+its own Neuroglancer page from the same machine as the chunks.</p>
+<p>The hosted appspot viewer is <code>https</code> and browsers block it from fetching
+<code>http://10.x.x.x</code> ("mixed content"; only <code>localhost</code> is exempt). To use appspot from other
+machines, start the server with <code>--https</code>. chunkmirage generates a self-signed certificate
+whose subject alternative names cover the machine's IP, hostname and <code>localhost</code>. Each
+browser has to trust it once: open the printed <code>https://…/</code> URL, accept the warning, then
+open the viewer link. Neuroglancer's chunk fetches will otherwise fail silently.</p>
+<p>The examples (<code>examples/swirl_demo.py</code>, <code>examples/fly_brain_registration.py</code>) do this by
+default, so the links they print can be sent to anyone on the network: they bind every
+interface, use the machine's IP, and serve https with that certificate. <code>--host 127.0.0.1</code>
+keeps one local (plain http, <code>localhost</code> links); <code>--no-https</code> keeps plain http on the
+network, where only the python viewer link works from other machines.</p>
+<p>Edits are global: everyone viewing dataset <code>thresh</code> sees the same pipeline, and a slider
+drag by one person changes it for all. For independent exploration, create a copy under
+another name (<code>POST /api/datasets</code> with the same spec); upstream stages are shared through
+the cache, so copies are nearly free.</p>
+<h2 id="transforms-on-the-fly">Transforms on the fly<a class="headerlink" href="#transforms-on-the-fly" title="Permanent link">&para;</a></h2>
+<p>Two cases, and they belong in different places:</p>
+<ul>
+<li><strong>Affine</strong> (translate, rotate, scale, shear): Neuroglancer applies a per-layer affine
+  transform on the client, editable live in the layer's <em>Source</em> tab, with no refetch and
+  no server. Do not route these through chunkmirage.</li>
+<li><strong>Non-affine</strong> (displacement fields, non-rigid registration, resampling into another
+  dataset's grid): the client cannot do these. A
+  <a href="../formats/#scene-sources-ome-zarr-06-transformations"><code>scene://</code> source</a> resamples an
+  image through OME-Zarr 0.6 transformations on the server, chunk by chunk. Editing the
+  scene's transformations and <code>PUT</code>ting the dataset again changes the digest, and the
+  viewer refetches as above. For a deformation you can change continuously, a
+  <a href="../formats/#warp-sources-procedural-deformations"><code>warp://</code> source</a> computes a swirl
+  from coordinates, over a <code>t</code> axis of frames if you like; <code>examples/swirl_demo.py</code> plays
+  it in the python viewer with its displacement field shown as an RGB layer. To have the
+  field solved rather than given, a
+  <a href="../formats/#register-sources-deformable-registration-on-a-gpu"><code>register://</code> source</a>
+  fits it on a GPU when it opens, in seconds; <code>PUT</code> the URL with another <code>smooth</code> or
+  <code>grid</code> and the viewer shows the new registration moments later.
+  <code>examples/register_demo.py</code> does this from a terminal prompt and compares fixed and
+  registered in a shader on the viewer's GPU, with no refetch. Landmarks edited live in
+  the viewer are on the <a href="../../roadmap/">roadmap</a>.</li>
+</ul>
+<h2 id="for-your-own-tooling">For your own tooling<a class="headerlink" href="#for-your-own-tooling" title="Permanent link">&para;</a></h2>
+<p><code>GET /api/events</code> emits an initial <code>change</code> event and one per edit:</p>
+<div class="highlight"><pre><span></span><code>event: change
+data: {"version": 7, "datasets": {"thr": {"digest": "75f2…", "sources": {"zarr3": "zarr3://…", …}}}}
+</code></pre></div>
+<p>Subscribe from JavaScript with <code>EventSource</code>, or from Python with <code>httpx</code> streaming. Fetch
+<code>GET /api/neuroglancer?format=zarr3</code> for a complete viewer state containing every dataset.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

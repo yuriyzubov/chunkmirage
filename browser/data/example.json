@@ -1,0 +1,27 @@
+{
+  "fixed": "fly/JRC2018F",
+  "moving": "fly/FCWB",
+  "published_affine": [
+    [
+      0.549687,
+      -0.0138092,
+      0.000127526,
+      2.9986
+    ],
+    [
+      0.0893289,
+      1.04339,
+      -0.000121014,
+      -6.39702
+    ],
+    [
+      0.00779285,
+      0.00299018,
+      0.907875,
+      -3.77146
+    ]
+  ],
+  "about": "Example: the fly brain templates JRC2018F (Bogovic et al. 2020) as fixed and FCWB (Costa et al. 2016) as moving, from the OME-NGFF transformation examples. As stored, FCWB is about half as deep and sits elsewhere.",
+  "published_about": "the published affine: the affine part of the JRC2018F-to-FCWB transform in the same examples, where a displacement field of its own comes first",
+  "source": "https://ngff-rfc5-coordinate-transformation-examples.s3.amazonaws.com/user_stories/image_registration_3d.zarr"
+}

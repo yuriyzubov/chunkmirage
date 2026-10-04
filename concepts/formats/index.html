@@ -1,0 +1,2165 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spoof chunked array formats over HTTP with on-the-fly processing.">
+      
+      
+      
+        <link rel="canonical" href="https://yuriyzubov.github.io/chunkmirage/concepts/formats/">
+      
+      
+        <link rel="prev" href="../interactivity/">
+      
+      
+        <link rel="next" href="../../reference/ops/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Formats and URLs - chunkmirage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#formats-and-urls" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="chunkmirage" class="md-header__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chunkmirage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Formats and URLs
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="chunkmirage" class="md-nav__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    chunkmirage
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://yuriyzubov.github.io/chunkmirage/browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo gallery (in your browser) ↗
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipelines, ops and halos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interactivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chunk-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chunk paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edge-chunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edge chunks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geozarr-for-map-clients-browser-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GeoZarr, for map clients (browser engine)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meshes-computed-when-fetched" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meshes, computed when fetched
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#synthetic-procedural-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synthetic (procedural) sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scene-sources-ome-zarr-06-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scene sources (OME-Zarr 0.6 transformations)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warp-sources-procedural-deformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Warp sources (procedural deformations)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#register-sources-deformable-registration-on-a-gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Register sources (deformable registration on a GPU)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-sources-several-images-as-one-arrays-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stack sources (several images as one array's channels)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flip-sources-images-stored-the-other-way-round" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flip sources (images stored the other way round)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stitch-sources-tiles-stitched-by-interest-points-and-ransac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stitch sources (tiles stitched by interest points and RANSAC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geotiff-sources-cloud-optimized-geotiffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GeoTIFF sources (cloud-optimized GeoTIFFs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stored-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#your-own-schemes-sources-from-other-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your own schemes (sources from other packages)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing & doc policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#chunk-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Chunk paths
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#compression" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Compression
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#edge-chunks" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Edge chunks
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#geozarr-for-map-clients-browser-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GeoZarr, for map clients (browser engine)
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#meshes-computed-when-fetched" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Meshes, computed when fetched
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-types" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Data types
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sources
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Sources">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#synthetic-procedural-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synthetic (procedural) sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#scene-sources-ome-zarr-06-transformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Scene sources (OME-Zarr 0.6 transformations)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#warp-sources-procedural-deformations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Warp sources (procedural deformations)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#register-sources-deformable-registration-on-a-gpu" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Register sources (deformable registration on a GPU)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stack-sources-several-images-as-one-arrays-channels" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stack sources (several images as one array's channels)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#flip-sources-images-stored-the-other-way-round" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Flip sources (images stored the other way round)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stitch-sources-tiles-stitched-by-interest-points-and-ransac" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stitch sources (tiles stitched by interest points and RANSAC)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#geotiff-sources-cloud-optimized-geotiffs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        GeoTIFF sources (cloud-optimized GeoTIFFs)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#stored-sources" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Stored sources
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#your-own-schemes-sources-from-other-packages" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Your own schemes (sources from other packages)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yuriyzubov/chunkmirage/edit/main/docs/concepts/formats.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="formats-and-urls">Formats and URLs<a class="headerlink" href="#formats-and-urls" title="Permanent link">&para;</a></h1>
+<p>Every dataset is served through every frontend simultaneously. Given a dataset named
+<code>em</code> on <code>http://localhost:8000</code>:</p>
+<table>
+<thead>
+<tr>
+<th>frontend</th>
+<th>Neuroglancer source URL</th>
+<th>notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n5</code></td>
+<td><code>n5://http://localhost:8000/em/n5</code></td>
+<td>multiscale group, <code>s0..sN</code>; gzip or raw chunks</td>
+</tr>
+<tr>
+<td><code>zarr</code></td>
+<td><code>zarr2://http://localhost:8000/em/zarr</code></td>
+<td>Zarr v2 + OME-NGFF 0.4 <code>multiscales</code>; consolidated <code>.zmetadata</code> too</td>
+</tr>
+<tr>
+<td><code>zarr3</code></td>
+<td><code>zarr3://http://localhost:8000/em/zarr3</code></td>
+<td>Zarr v3 + OME-NGFF 0.5 in group attributes</td>
+</tr>
+<tr>
+<td><code>precomputed</code></td>
+<td><code>precomputed://http://localhost:8000/em/precomputed</code></td>
+<td><code>raw</code> encoding, 3-D or 4-D (c,z,y,x) only; HTTP gzip when accepted</td>
+</tr>
+<tr>
+<td><code>mesh</code></td>
+<td><code>precomputed://http://localhost:8000/em/mesh</code></td>
+<td>a surface of the dataset as Neuroglancer meshes, segment <code>1</code>, each fragment meshed when fetched, at one resolution or several (finer where you zoom); see <a href="#meshes-computed-when-fetched">Meshes</a></td>
+</tr>
+</tbody>
+</table>
+<p>A cache-busting token may be inserted after the name: <code>/em/@{digest}/zarr3</code>. The API always
+hands out this form; the plain form always serves the current pipeline.</p>
+<h2 id="chunk-paths">Chunk paths<a class="headerlink" href="#chunk-paths" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>frontend</th>
+<th>metadata</th>
+<th>chunk key</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>n5</code></td>
+<td><code>attributes.json</code>, <code>s0/attributes.json</code></td>
+<td><code>s0/x/y/z</code> (x first)</td>
+</tr>
+<tr>
+<td><code>zarr</code></td>
+<td><code>.zgroup</code>, <code>.zattrs</code>, <code>s0/.zarray</code></td>
+<td><code>s0/z/y/x</code> or <code>s0/z.y.x</code> (both accepted)</td>
+</tr>
+<tr>
+<td><code>zarr3</code></td>
+<td><code>zarr.json</code>, <code>s0/zarr.json</code></td>
+<td><code>s0/c/z/y/x</code></td>
+</tr>
+<tr>
+<td><code>precomputed</code></td>
+<td><code>info</code></td>
+<td><code>s0/x0-x1_y0-y1_z0-z1</code>, must align to chunk grid</td>
+</tr>
+</tbody>
+</table>
+<p>Internally arrays are numpy C order <code>(z, y, x)</code>. N5 and precomputed list axes x-first, so
+their metadata and keys are reversed relative to zarr.</p>
+<p>The group and each level also answer as directories, for clients that browse a store
+rather than name its keys: a path ending in <code>/</code>, or a group or level path asked for with
+HTML first in <code>Accept</code> (as browsers and Java's HTTP client send), gets a listing in the
+form Python's <code>http.server</code> writes, with the metadata keys and one <code>sN/</code> per level, never
+the chunks. That is how Fiji's N5 viewer finds the levels (n5's HTTP access lists them;
+checked with n5 4.0.1 and n5-zarr 2.0.1 for N5, zarr v2 and v3). Clients that ask for
+<code>*/*</code>, as Neuroglancer, tensorstore and zarr-python do, get the metadata at those paths as
+before. Precomputed has no directories.</p>
+<table>
+<thead>
+<tr>
+<th>client</th>
+<th>reads</th>
+<th>checked</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Neuroglancer</td>
+<td>all four formats</td>
+<td>the docs' demos</td>
+</tr>
+<tr>
+<td>Fiji / BigDataViewer (n5-universe)</td>
+<td>N5, zarr v2, zarr v3, and browses the levels</td>
+<td>n5's HTTP access reading every format and listing the levels; the Fiji application itself not run</td>
+</tr>
+<tr>
+<td>zarr-python, dask, napari's zarr reader</td>
+<td>zarr v2, v3</td>
+<td>zarr-python 3.4 and dask reading a pipeline over HTTP</td>
+</tr>
+<tr>
+<td>tensorstore</td>
+<td>all four formats</td>
+<td><code>tests/test_clients.py</code>, against a running server</td>
+</tr>
+<tr>
+<td>webKnossos</td>
+<td>zarr v2, v3, N5, precomputed</td>
+<td>not run; it asks for byte ranges only of sharded data, which the server does not produce</td>
+</tr>
+</tbody>
+</table>
+<h2 id="compression">Compression<a class="headerlink" href="#compression" title="Permanent link">&para;</a></h2>
+<p><code>Zarr2Frontend</code>, <code>Zarr3Frontend</code> accept <code>compressor="blosc" | "zstd" | "gzip" | "none"</code>,
+blosc (zstd with byte shuffle) by default: on a 64×256×256 chunk it encodes float32 30
+times faster than gzip and uint8 about 30 times faster, at the same ratio, and every
+zarr reader listed above reads it except Fiji and BigDataViewer without the native Blosc
+library (<code>--compressor gzip</code> for them). <code>N5Frontend</code> accepts <code>gzip</code> or <code>raw</code>. Precomputed <code>raw</code> is uncompressed by definition, so
+the server applies <code>Content-Encoding: gzip</code> when the client accepts it.</p>
+<h2 id="edge-chunks">Edge chunks<a class="headerlink" href="#edge-chunks" title="Permanent link">&para;</a></h2>
+<p>Zarr requires full-size chunks, so edge chunks are zero-padded (by the browser engine too).
+N5 and precomputed encode the clipped size.</p>
+<h2 id="geozarr-for-map-clients-browser-engine">GeoZarr, for map clients (browser engine)<a class="headerlink" href="#geozarr-for-map-clients-browser-engine" title="Permanent link">&para;</a></h2>
+<p>The browser engine serves each view twice: as OME-Zarr 0.5 for Neuroglancer
+(<code>virtual/&lt;page&gt;/&lt;view&gt;/</code>) and, for a view read from a georeferenced source (a GeoTIFF), as
+GeoZarr for map clients such as OpenLayers (<code>virtual/&lt;page&gt;/geo/&lt;view&gt;/</code>). The GeoZarr
+group carries the zarr-conventions <code>multiscales</code> (one <code>layout</code> entry per level, its
+<code>spatial:shape</code>), <code>proj:</code> (<code>proj:code</code>, the projection the page names: a map client must
+know it, as the Moon page registers the lunar south polar stereographic) and <code>spatial:</code>
+(<code>spatial:dimensions</code> <code>[y, x]</code>, <code>spatial:bbox</code> the pixels' corners) attributes; level <code>&lt;i&gt;</code>
+is a group holding the view as its one band, <code>&lt;i&gt;/&lt;view&gt;</code>, a 2-D <code>y, x</code> array (the view's
+one z plane; a map reads 2-D bands). Chunks are the same chunks, computed once whichever
+layout asks. The Python server has no GeoZarr frontend yet. The engine also serves each
+view as zarr v2 with OME-Zarr 0.4 (<code>virtual/&lt;page&gt;/zarr2/&lt;view&gt;/</code>), the same chunks, for
+readers that predate zarr v3's final spec: GDAL 3.8, as the fires demo runs it in the page
+(gdal3.js), opens a level as a zarr array and translates it to a GeoTIFF.</p>
+<h2 id="meshes-computed-when-fetched">Meshes, computed when fetched<a class="headerlink" href="#meshes-computed-when-fetched" title="Permanent link">&para;</a></h2>
+<p>The <code>mesh</code> frontend serves a dataset's surface in Neuroglancer's precomputed mesh formats,
+for a segmentation layer whose source is <code>precomputed://.../&lt;name&gt;/mesh</code>, segment <code>1</code>.</p>
+<p><strong>One resolution</strong> (the default): the legacy format. <code>info</code>
+(<code>{"@type": "neuroglancer_legacy_mesh"}</code>), the manifest <code>1:0</code> listing one fragment per chunk
+of one level, and each fragment <code>1:0:i_j_k</code>, meshed when it is fetched (<code>uint32</code> vertex
+count, <code>float32</code> x, y, z per vertex in nanometres, <code>uint32</code> triangle corners). A fragment is
+its chunk plus one voxel on its high sides, so neighbouring fragments meet exactly (the
+surface is watertight across them), and closed at the array's edges. Neuroglancer fetches
+every fragment of the manifest, so the level bounds the work, and zooming in shows nothing
+finer.</p>
+<p><strong>Several resolutions</strong> (<code>lods</code> above 1): the multi-resolution format, whose meshes get finer
+where the viewer zooms in. Level of detail <code>i</code> is the pyramid level <code>level - lods + 1 + i</code>,
+its octree nodes that level's chunks, so each finer level splits a node in eight. <code>info</code>
+(<code>neuroglancer_multilod_draco</code>, 16-bit positions), the index <code>1.index</code> (per level of detail
+its nodes and their sizes; each level's voxel size is its scale, the offset of its origin
+its vertex offset) and the fragments' file <code>1</code>, which Neuroglancer reads by HTTP Range
+requests, one node at a time, for the nodes in view at the detail it wants (a segmentation
+layer's <code>meshRenderScale</code>: larger is coarser). The format wants every fragment's size before
+any is fetched, which on-demand meshing cannot know, so every fragment is padded to one size
+(128 KB; Draco decoders read what they need and ignore the rest, and the server gzips them,
+so a padded fragment costs a few hundred bytes to a few tens of kilobytes on the wire). A
+node's mesh is marching cubes on each of its octants apart (no triangle may cross one, so
+Neuroglancer can show part of a coarse node while its children load), its vertices integers
+across the node, coarsened past 100,000 triangles, and encoded with Draco (DracoPy, in the
+<code>mesh</code> extra; the browser engine uses Draco's own WebAssembly build). Only nodes within two
+voxels of the coarsest level's surface are listed, which the index is made from when it is
+first asked for (the whole coarsest level is read once): a finer level's surface lies near
+the coarser one's, and a listed node that turns out empty costs only its fetch. Four levels
+of detail of the Mandelbulb from its 256³ level list about 47,000 nodes, a 750 KB index;
+more than two million are refused.</p>
+<p>The spec's <code>mesh</code> (CLI <code>--mesh</code>) says what is meshed: <code>kind: surface</code> (default) is the
+boundary of the voxels at or above <code>threshold</code> (128), by marching cubes (scikit-image, the
+<code>mesh</code> extra); <code>kind: terrain</code> is an elevation model (<code>y, x</code>, or <code>z, y, x</code> with one z) as
+two triangles per cell, its elevation times <code>exaggeration</code> as height, cells with a NaN
+corner left out (one resolution only). <code>level</code> picks the level, the coarsest with <code>lods</code>
+(default: the finest whose longest side is at most 512 voxels), and <code>lods</code> the levels of
+detail. The browser engine serves the same at <code>virtual/&lt;page&gt;/&lt;view&gt;/mesh</code>, its workers
+running the same module (<code>chunkmirage.meshes</code>); for the multi-resolution index it masks the
+coarsest level's eighths in its workers at once (each with a border, for its surface band),
+and cuts the coarsest nodes' fragments from that mask (the Python server does the same), so
+the coarsest level is computed once. The index has to be made from the whole coarsest level
+before Neuroglancer can ask for any fragment: the Mandelbulb's appears after about 16 s in a
+browser, against 8 s for its single-resolution mesh.</p>
+<div class="highlight"><pre><span></span><code>chunkmirage<span class="w"> </span>serve<span class="w"> </span><span class="s1">'synthetic://mandelbulb?shape=268435456,268435456,268435456&amp;voxel_size=1&amp;unit=nm'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--mesh<span class="w"> </span><span class="nv">threshold</span><span class="o">=</span><span class="m">255</span>,level<span class="o">=</span><span class="m">20</span>,lods<span class="o">=</span><span class="m">4</span><span class="w"> </span>--chunk<span class="w"> </span><span class="m">32</span>,32,32<span class="w"> </span>--python-viewer
+</code></pre></div>
+<h2 id="data-types">Data types<a class="headerlink" href="#data-types" title="Permanent link">&para;</a></h2>
+<p>Precomputed supports <code>uint8</code>, <code>uint16</code>, <code>uint32</code>, <code>uint64</code>, <code>float32</code> only; add a <code>cast</code> op
+for anything else. Precomputed volumes are typed by what their values are (<code>ArrayInfo.kind</code>,
+which ops declare): labels and masks <code>segmentation</code>, images <code>image</code>; where nothing says,
+<code>uint32</code>/<code>uint64</code> are <code>segmentation</code> and others <code>image</code>. Override with
+<code>PrecomputedFrontend(volume_type=...)</code>.</p>
+<p>Stored arrays (zarr, N5, precomputed, HDF5) say nothing of what their values are, so their
+kind is guessed from the dtype: integers of 32 bits or more are labels, booleans masks, the
+rest unknown. Labels and masks are resampled by nearest voxel and downsampled by their most
+common value, never averaged, so no ids are invented between two segments. A spec's <code>kind</code>
+(<code>open_source(..., kind=...)</code> in Python) overrides the guess: <code>"kind": "image"</code> for a uint32
+image, <code>"label"</code> for ids stored as uint16.</p>
+<h2 id="sources">Sources<a class="headerlink" href="#sources" title="Permanent link">&para;</a></h2>
+<h3 id="synthetic-procedural-sources">Synthetic (procedural) sources<a class="headerlink" href="#synthetic-procedural-sources" title="Permanent link">&para;</a></h3>
+<p><code>synthetic://&lt;kind&gt;?shape=z,y,x&amp;chunk=64,64,64&amp;levels=N&amp;seed=0&amp;voxel_size=8&amp;unit=nm</code>
+generates data on the fly from voxel coordinates. Nothing is stored, so the volume can be
+as large as you like, and each scale level is the same function sampled at a coarser
+spacing, so the pyramid is exact (<code>s1[z,y,x] == s0[2z,2y,2x]</code>). Kinds: <code>blobs</code> (Gaussian
+blobs), <code>shells</code> (hollow spheres, membrane-like), <code>noise</code> (fractal value noise), <code>julia</code>
+(a 3-D slice of a quaternion Julia set), <code>mandelbulb</code> (the power-8 Mandelbulb, to zoom
+into); combine with <code>+</code>, e.g. <code>blobs+noise</code>. Useful for demos and for stress-testing
+pipelines without I/O. Generation is vectorised numpy, so the server's threadpool runs it
+on all cores, and the browser engine's Pyodide workers run the same module for a view
+whose source is <code>synthetic://</code> (nothing is read).</p>
+<p><code>mandelbulb</code> spans <code>[-1.25, 1.25]</code> on every axis in float64 from integer indices, so an
+array 2^28 voxels across (21 levels, 10^25 voxels) still resolves its finest voxels. Its
+value is 4 × the smooth escape iteration (255 inside), the same at every level, so a
+colour stays a colour as the viewer changes level; and it is the one kind whose levels are
+not exactly the same function: a level iterates <code>10 + 3 log2(256 / voxels across)</code> times,
+more the finer it is, as fractal zoomers do, so zooming in resolves new detail.</p>
+<h3 id="scene-sources-ome-zarr-06-transformations">Scene sources (OME-Zarr 0.6 transformations)<a class="headerlink" href="#scene-sources-ome-zarr-06-transformations" title="Permanent link">&para;</a></h3>
+<p><code>scene://&lt;group&gt;?image=&lt;image path&gt;&amp;target=&lt;image path or coordinate system&gt;</code></p>
+<p>serves one image of an <a href="https://ngff.openmicroscopy.org/specifications/0.6/">OME-Zarr 0.6</a>
+scene resampled onto another grid through the scene's coordinate transformations,
+including displacement fields. No viewer applies those yet: Neuroglancer refuses to load
+an image whose transformation is a displacement field, and napari and vizarr skip them.
+Served this way, every viewer and every zarr reader sees the registered volume, and
+nothing is written. Each output chunk is computed on its own: its voxel centres go
+through the transformation chain into the source image, the exact bounding box of the
+results is read at the matching resolution level, and the values are interpolated. Ops
+can follow as with any source.</p>
+<div class="highlight"><pre><span></span><code>chunkmirage<span class="w"> </span>serve<span class="w"> </span><span class="s2">"scene:///data/fly_brains.zarr?image=FCWB&amp;target=JRC2018F"</span>
+</code></pre></div>
+<p><code>examples/fly_brain_registration.py</code> builds that scene from the public RFC-5 example (two
+Drosophila brain templates, a displacement field plus affine between them) and serves the
+registered template next to the fixed one.</p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>image</code></td>
+<td>the group itself, if it is a multiscale image</td>
+<td>image to resample, relative to the group</td>
+</tr>
+<tr>
+<td><code>target</code></td>
+<td>the scene's first coordinate system, else the image's own</td>
+<td>an image path (its grid and levels are used) or a coordinate system name</td>
+</tr>
+<tr>
+<td><code>interpolation</code></td>
+<td><code>linear</code>; <code>nearest</code> for label images</td>
+<td><code>nearest</code> keeps label ids exact</td>
+</tr>
+<tr>
+<td><code>inverse</code></td>
+<td><code>exact</code></td>
+<td><code>approx</code> also walks displacement fields backwards, estimating their inverse by fixed-point iteration</td>
+</tr>
+<tr>
+<td><code>shape</code>, <code>voxel_size</code>, <code>translation</code>, <code>levels</code>, <code>chunk</code></td>
+<td>the target image's grid, else the source image's</td>
+<td>explicit output grid, e.g. for a scene coordinate system with no image: spatial axes, C order, target units; one value applies to every axis</td>
+</tr>
+<tr>
+<td><code>field_cache_gb</code></td>
+<td><code>0.0625</code></td>
+<td>decoded-chunk cache per displacement field; raise it for fields stored in large chunks so each is decoded once (see below)</td>
+</tr>
+<tr>
+<td><code>large_field_chunks</code></td>
+<td><code>0</code></td>
+<td><code>1</code> accepts fields stored in chunks over 256 MiB, decoding them one at a time (see below)</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Finding the transformation.</strong> Coordinate systems (the scene's own and each image's) are
+the nodes of a graph and transformations are its edges. The shortest path from the target
+to the image's intrinsic system is used. An edge is walked backwards only if it has a
+closed-form inverse (scale, translation, affine, rotation, mapAxis, and sequences or
+byDimension of those) or is a <code>bijection</code>. Registration tools usually store fixed →
+moving, which is the direction resampling needs, so this is rarely a limit; otherwise
+<code>inverse=approx</code> estimates the inverse of displacement fields. Where a field folds there
+is no unique inverse, and those voxels are left empty rather than filled wrongly.</p>
+<p><strong>Details.</strong></p>
+<ul>
+<li>Transformation types: identity, scale, translation, affine, rotation, mapAxis,
+  projectAxis, sequence, displacements, coordinates, bijection, byDimension; parameters
+  inline or stored under <code>path</code>.</li>
+<li>Fields: 0.6 multiscale field groups (vector axis first), and the draft layout (a bare
+  array with the vector axis last, as BigWarp exports). Outside its grid a field takes the
+  nearest edge value. <code>cubic</code> field interpolation is read as linear.</li>
+<li>Time and channel axes of the image pass through unchanged; transformations act on the
+  spatial axes. The output is the image's leading axes plus the target's spatial grid.</li>
+<li>Each output level reads the coarsest source level that is still at least as fine as one
+  output voxel, measured through the transformation at the grid centre, so zoomed-out
+  views read small levels.</li>
+<li>Voxels that map outside the image are 0.</li>
+<li>Field chunking decides speed and memory. Each output chunk reads the small window of the
+  field it needs, but a store decodes whole chunks: a field saved as a few huge chunks (for
+  example one full-z, full-x band per writer job) costs a full-chunk decode per output
+  chunk, and a viewer's parallel requests start several at once. A 113 GB field in 6.6 GiB
+  chunks exhausted a 93 GB workstation this way. So fields whose chunks exceed 256 MiB are
+  refused, with the numbers, unless <code>large_field_chunks=1</code>; then they are decoded one at a
+  time, and <code>field_cache_gb</code> above one chunk decodes each only once. Better: store fields in
+  chunks of about 64³, or sharded with small inner chunks.</li>
+<li>One output region may read at most 2 GiB of the source image; a transformation that
+  spreads a chunk over more than that is refused rather than allocated. Use smaller output
+  chunks (<code>chunk=</code>) if you hit it.</li>
+<li>Also read: the 0.6 drafts' string <code>input</code>/<code>output</code> references, <code>multiscales</code> objects and
+  snake_case <code>input_axes</code>.</li>
+<li>The <a href="https://github.com/clbarnes/ome_zarr_transformations_conformance">RFC-5 transformation conformance
+  suite</a> runs in the tests
+  (<code>tests/data/rfc5_conformance</code>).</li>
+</ul>
+<p>The cache key of each level folds in the whole transformation chain, so editing the
+scene's metadata and re-<code>PUT</code>ting the dataset gives new URLs. A field rewritten in place
+under the same path keeps its key; restart or clear the cache after doing that.</p>
+<h3 id="warp-sources-procedural-deformations">Warp sources (procedural deformations)<a class="headerlink" href="#warp-sources-procedural-deformations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>warp://&lt;image&gt;?field=swirl&amp;angle=90&amp;radius=200&amp;centre=z,y,x&amp;plane=y,x
+warp://&lt;image&gt;?field=swirls&amp;count=8&amp;seed=0&amp;angle=90&amp;radius=200
+</code></pre></div>
+<p>serves <code>&lt;image&gt;</code> (anything above or below, including <code>synthetic://</code> URLs) twisted on its
+own grid by swirls computed from coordinates, and with <code>&amp;show=field</code> the displacement
+itself: a <code>(c, z, y, x)</code> float32 volume whose three components are the z, y and x
+displacement in the image's units. Nothing is stored, not even the field, so any
+parameter can change at any time: <code>PUT</code> a new URL and the viewer refetches what is on
+screen. The resampling is the same as for scene sources, and each chunk reads only the
+compact region its rotated voxels come from, however large the displacement.</p>
+<p><code>swirl</code> is one twist about an axis along a spatial axis (z for the default <code>plane=y,x</code>),
+fading with distance from that axis, so it is a column through the volume. <code>swirls</code>
+(3-D images) are <code>count</code> balls of twist at random places, each about its own axis in a
+random direction and fading with distance from its centre, so they move points along z
+too. Their displacements add; where they overlap the sum is smooth but no longer a pure
+rotation. The same <code>seed</code> gives the same swirls.</p>
+<p>With <code>&amp;frames=N</code> the swirl grows along a new leading <code>t</code> axis, from none at frame 0 to
+<code>angle</code> at the last, so a viewer animates it by playing <code>t</code> (Neuroglancer's playback)
+instead of loading new URLs: each frame is its own chunks, computed when first shown and
+cached from then on. <code>examples/swirl_demo.py</code> shows the original, the swirled image and
+the field side by side and plays the frames.</p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>field</code></td>
+<td>(required)</td>
+<td><code>swirl</code> or <code>swirls</code></td>
+</tr>
+<tr>
+<td><code>angle</code></td>
+<td><code>90</code></td>
+<td>twist on the axis, degrees; it fades as <code>exp(-(r/radius)²)</code> with distance <code>r</code> from the axis (<code>swirl</code>) or the centre (<code>swirls</code>). Each of the <code>swirls</code> turns by ½ to 1 × <code>angle</code>, either way</td>
+</tr>
+<tr>
+<td><code>radius</code></td>
+<td><code>swirl</code>: a quarter of the smaller in-plane extent; <code>swirls</code>: a fifth of the smallest extent</td>
+<td>fall-off distance, image units; each of the <code>swirls</code> gets ½ to 1 × <code>radius</code></td>
+</tr>
+<tr>
+<td><code>centre</code></td>
+<td>the volume centre</td>
+<td>image units, C order: a point on the axis (<code>swirl</code>), the middle of the box the centres fall in (<code>swirls</code>)</td>
+</tr>
+<tr>
+<td><code>plane</code></td>
+<td>the last two axes, e.g. <code>y,x</code></td>
+<td><code>swirl</code>: the two axes that turn</td>
+</tr>
+<tr>
+<td><code>count</code></td>
+<td><code>8</code></td>
+<td><code>swirls</code>: how many</td>
+</tr>
+<tr>
+<td><code>seed</code></td>
+<td><code>0</code></td>
+<td><code>swirls</code>: random seed for their centres, axes, radii and angles</td>
+</tr>
+<tr>
+<td><code>spread</code></td>
+<td>half the volume</td>
+<td><code>swirls</code>: half-size of the box around <code>centre</code> their centres fall in; one value or <code>z,y,x</code></td>
+</tr>
+<tr>
+<td><code>show</code></td>
+<td><code>image</code></td>
+<td><code>field</code> serves the displacement instead</td>
+</tr>
+<tr>
+<td><code>frames</code></td>
+<td>none</td>
+<td>frames on a leading <code>t</code> axis; frame <code>i</code> twists by <code>angle·i/(frames−1)</code>. An image's own <code>t</code> axis must hold one time point, which the frames replace</td>
+</tr>
+<tr>
+<td><code>chunk</code></td>
+<td>the image's</td>
+<td>output chunk shape of the spatial axes, C order; thin chunks such as <code>8,128,128</code> compute less for a view of one plane</td>
+</tr>
+<tr>
+<td><code>interpolation</code></td>
+<td><code>linear</code>; <code>nearest</code> for uint32/uint64</td>
+<td>as for scene sources</td>
+</tr>
+</tbody>
+</table>
+<p>The parameters follow the last <code>?</code>, so the image URL may carry its own query. To show the
+field as RGB, its components must be a Neuroglancer shader channel dimension (<code>c^</code>, read
+with <code>getDataValue(0..2)</code>). The precomputed frontend makes them one, but holds only
+<code>(c, z, y, x)</code>; with frames, serve zarr and rename the channel dimension <code>c'</code> to <code>c^</code>
+(<code>Viewer.rename_dimensions</code>, as the demo does).</p>
+<h3 id="register-sources-deformable-registration-on-a-gpu">Register sources (deformable registration on a GPU)<a class="headerlink" href="#register-sources-deformable-registration-on-a-gpu" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>register://&lt;moving&gt;?fixed=&lt;fixed&gt;&amp;affine=&lt;matrix.npy&gt;
+register://&lt;moving&gt;?fixed=&lt;fixed&gt;&amp;affine=&lt;matrix.npy&gt;&amp;show=pair
+</code></pre></div>
+<p>serves <code>&lt;moving&gt;</code> registered onto <code>&lt;fixed&gt;</code>'s grid, at every level of <code>&lt;fixed&gt;</code> and with
+every channel of <code>&lt;moving&gt;</code>. Opening the source solves for a smooth displacement field <code>u</code>
+in the fixed image's space such that the moving image sampled at <code>affine(p + u(p))</code> looks
+like the fixed image at <code>p</code>. The solve reads a few coarse levels of both images, fits
+their local normalized cross-correlation with a penalty on the field's gradient, and runs
+Adam from coarse levels to fine ones, on a GPU when there is one (PyTorch:
+<code>pip install chunkmirage[gpu]</code>; otherwise the CPU, slowly). Left out of the fit are
+windows with no contrast in either image, and fixed voxels whose window the moving image
+does not cover under the affine (a moving image with a smaller field of view): there is
+nothing to match, and fitting them would drag the moving image's edge over whatever lies
+beyond it, so the field there follows from its smoothness. The field lives on a control grid a few voxels
+apart, so it is small (megabytes for an organ) and stays in memory. Every output chunk is
+then the moving image resampled through it by the scene sources' resampler, so full
+resolution is served without anything being written.</p>
+<p><code>u</code> has the convention registration pipelines write to disk (a displacement in fixed
+space, applied before the fixed-to-moving affine, e.g. bigstream's), so it can be
+compared with theirs directly (<code>show=field</code>), and the moving image's other channels come
+out registered too. On a 1231×14124×5452 EASI-FISH gut round (an RTX 2080 Ti, the affine
+from a keypoint fit, scored at level 3, finer than the solve): levels 6 and 5 solve in
+2.4 s and beat a bigstream registration on local correlation and on the overlap of bright
+voxels; levels 6 to 4, the default, take 15 s and match a cluster block-matching
+registration's local correlation, 0.02 below it on overlap, its field within a median
+13 µm of theirs.</p>
+<p>Solved fields are remembered per process (the last 8), so opening the same URL again (a
+downstream op edit, or another <code>show</code>) does not solve again, while changing a solver
+parameter does. The solve runs in whatever opens the source (server start-up, or the
+<code>PUT</code> that sets it), plus about 10 s the first time to import PyTorch from a network
+file system.</p>
+<p>With <code>refine=n</code>, the <code>n</code> levels below the solved ones are fitted where they are looked
+at, not up front. Each gets its own control lattice, <code>grid</code> voxels apart, in blocks of
+<code>block</code> voxels (64×128×128 by default, whatever the output's chunks), and a block is
+fitted when a chunk it covers is first requested: from the
+solved field over the block plus <code>halo</code> voxels of context, against the fixed and moving
+voxels those reach, coarse to fine over halved copies of them (down to about the solved
+level's resolution) for that level's <code>iterations</code> per copy; then it is kept in the
+server's chunk cache with the computed chunks, so <code>--cache-gb</code> bounds it and
+<code>DELETE /api/cache</code> clears it (1 GiB of its own when opened from Python without a cache). Every block starts from the solved field, so no level waits on
+another's blocks. The finest fitted level's field serves every level below it. So the fit's
+detail grows with the zoom and its cost with what is viewed rather than with the volume,
+and whatever asks for chunks drives it: Neuroglancer, Fiji, webKnossos, a dask array.
+Blocks are fitted separately, each over its context too, so neighbouring blocks overlap,
+and they are blended there, as bigstream blends its blocks: a lattice point's value is the
+average of the blocks whose fits cover it, each weighted 1 over its own block and less the
+further into its context, so the field turns from one block's fit to the next's across the
+overlap. Without it, neighbouring fits that disagree made the field step at their shared
+edge: on the EASI-FISH pair below, by up to 0.9 µm per voxel, three times the steepest 1%
+inside a block, enough to shift structures by a few voxels at a seam. Blended, the field
+changes no faster across block edges than inside a block (0.17 to 0.21 µm per voxel at the
+99th percentile, against 0.18 to 0.24 inside). A block's fit still depends only on the
+solved field and the images, so the result does not depend on which blocks were fitted
+first. The price is a ring of blocks: a chunk at a block's edge needs the block on the
+other side too (zooming the browser page into the EASI-FISH pair, 66 blocks instead of 45,
+and the view complete in 115 s instead of 98 s). On the tests' swirled volume the block
+fit and a whole-image solve of the same levels agree to 2×10⁻³ in correlation with the
+fixed image.</p>
+<p>The window matters most at the fine levels. Two rounds of one EASI-FISH fly brain sit in a
+public bucket that allows any origin (3.4 G voxels per channel, 0.23 µm), so this runs from
+anywhere:</p>
+<div class="highlight"><pre><span></span><code><span class="nv">E</span><span class="o">=</span>https://janelia-data-examples.s3.amazonaws.com/fly-efish/NP31_R2_20240119
+chunkmirage<span class="w"> </span>serve<span class="w"> </span><span class="s2">"register://</span><span class="nv">$E</span><span class="s2">/NP31_R2_2_1_SS00090_FMRFa_546_Proc_647_1x_Central.zarr/0?fixed=</span><span class="nv">$E</span><span class="s2">/NP31_R2_1_1_SS00090_Spab_546_Nplp1_647_1x_Central.zarr/0&amp;affine=auto&amp;refine=3&amp;iterations=100,40,40,40&amp;window=15,31,31,31&amp;show=pair"</span><span class="w"> </span>--https
+</code></pre></div>
+<p><code>affine=auto</code> finds in 2 s how round 2 was remounted: turned over (z and x reversed, a half
+turn about y) and tilted about 22° in the z-y plane. Level 3 (the default, 54 M voxels)
+solves in 20 s on an RTX 2080 Ti, and levels 2 to 0 are fitted as you zoom. Whether round 2
+is instead a mirror image (z alone reversed, as a stack taken the other way round would be)
+the images cannot say: the brain is nearly symmetric, and a tilted mirror, given as the
+affine, correlates as well (0.826 against 0.822), full-resolution chunks splitting between
+the two. The half turn needs the smaller field afterwards (a median 0.2 µm against 0.5 µm),
+so the search's rotation is kept; whoever knows the round was a mirror gives its affine.
+Three full-resolution chunks in the tissue correlate with the fixed image at 0.75, 0.64 and
+0.86 through the level-3 field, and at 0.85, 0.77 and 0.87 through blocks fitted with the
+command above. Measured with blocks of 128³ voxels, the window matters most: 7 gives 0.79,
+0.69 and 0.86, 15 gives 0.83, 0.75 and 0.87, 31 gives 0.86, 0.79 and 0.87 (a wider window
+helps the level-3 solve too: 15 there alone gives 0.82, 0.73 and 0.86), while a larger halo
+or more iterations changed nothing. Deeper blocks fit better, having room to go coarse to
+fine: with the command's windows, blocks of 16×128×128 voxels reach 0.83, 0.75 and 0.87,
+64×128×128 (the default) 0.85, 0.77 and 0.87, and 128³ 0.86, 0.79 and 0.87. The first
+chunk of a region takes about 20 s, mostly its blocks (with the neighbours its
+interpolation touches), then about 10 s a chunk, and blocks are kept, so a region fills in
+faster the longer it is looked at.</p>
+<p><code>affine=auto</code> finds the starting affine from the images (the coarsest solved level of
+each, halved to a few hundred thousand voxels): their intensity moments are matched, centre
+to centre and principal axis to principal axis, the best-correlated of the orientations
+that do not mirror the image is kept, and the 12
+numbers are then fitted by gradient ascent
+on the normalized cross-correlation at two resolutions, as the browser page does. The
+moments assume both images show the same whole object; a crop of one needs an affine given.
+A mirror image is not searched for: on a nearly symmetric specimen a mirror correlates as
+well as the right rotation while swapping left and right (on the fly templates exactly as
+well, 0.872, and 226 µm from the published affine), and a fit cannot reach one from a
+rotation (it would pass through a matrix that flattens the volume). An affine with a
+negative determinant, such as z reversed, is used as given. A found affine is
+remembered per image pair, like the solves.</p>
+<p><code>show=pair</code> serves a <code>(c, z, y, x)</code> volume whose two channels are the fixed image's
+matched channel and the registered moving image's, so one Neuroglancer shader can compare
+them on the viewer's GPU (overlay, checkerboard, fade, difference) with no refetch. The
+source carries that shader, so the link <code>chunkmirage serve</code> prints, the REST API's
+<code>neuroglancer</code> routes and the python viewer show the pair in colour without being asked:
+fixed magenta, registered green, white where they agree, with contrast from the coarsest
+solved level and a <code>mode</code> control for the other three comparisons. <code>show=field</code> likewise
+comes as a heat map of how far each point moved (a <code>direction</code> box colours by direction).
+<code>examples/register_demo.py</code> shows that next to the affine alone (<code>iterations=0</code>), and
+re-solves when you type new settings, the viewer keeping its camera.</p>
+<table>
+<thead>
+<tr>
+<th>parameter</th>
+<th>default</th>
+<th>meaning</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>fixed</code></td>
+<td>(required)</td>
+<td>the fixed image: anything <code>open_source</code> reads, with the same spatial units as <code>&lt;moving&gt;</code>; percent-encode it if it has a query</td>
+</tr>
+<tr>
+<td><code>affine</code></td>
+<td>identity</td>
+<td>fixed-to-moving affine in physical units, C order: a <code>.npy</code> or text file with a 4×4 or 3×4 matrix, or its 12 or 16 values inline, row by row; <code>auto</code> finds one from the images</td>
+</tr>
+<tr>
+<td><code>fixed_channel</code>, <code>moving_channel</code></td>
+<td><code>0</code></td>
+<td>the channel each image is matched on, for images with a <code>c</code> axis</td>
+</tr>
+<tr>
+<td><code>levels</code></td>
+<td>from the coarsest with ≥ 16 voxels on every axis to the finest with ≤ 2²⁵</td>
+<td>fixed-image levels to solve on, coarse to fine, e.g. <code>6,5,4</code>; each is matched with the moving level nearest its voxel size</td>
+</tr>
+<tr>
+<td><code>iterations</code></td>
+<td><code>100</code></td>
+<td>Adam steps per level: one value, one per level, or one per level with the refined ones; <code>0</code> leaves the affine alone (no GPU needed)</td>
+</tr>
+<tr>
+<td><code>refine</code></td>
+<td><code>0</code></td>
+<td>levels below the solved ones fitted block by block where they are viewed: <code>refine=3</code> with <code>levels=6,5,4</code> fits levels 3, 2 and 1</td>
+</tr>
+<tr>
+<td><code>halo</code></td>
+<td><code>8</code></td>
+<td>voxels of context on every side of a block being fitted: how far beyond it the fit looks</td>
+</tr>
+<tr>
+<td><code>block</code></td>
+<td><code>64,128,128</code></td>
+<td>voxels per refined block, C order, independent of the output's chunks; deeper blocks fit better (coarse to fine within them), thinner ones answer a single slice sooner</td>
+</tr>
+<tr>
+<td><code>smooth</code></td>
+<td><code>1</code></td>
+<td>weight of the penalty on the field's gradient</td>
+</tr>
+<tr>
+<td><code>grid</code></td>
+<td><code>4</code></td>
+<td>control-point spacing, voxels of each level</td>
+</tr>
+<tr>
+<td><code>window</code></td>
+<td><code>7</code></td>
+<td>correlation window, voxels (odd): one value, one per level, or one per level with the refined ones; fine levels gain from a wider one (see below)</td>
+</tr>
+<tr>
+<td><code>show</code></td>
+<td><code>image</code></td>
+<td><code>pair</code> (fixed and registered as two channels) or <code>field</code> (<code>u</code>, components first, physical units)</td>
+</tr>
+<tr>
+<td><code>frames</code></td>
+<td>none</td>
+<td>a leading <code>t</code> axis of that many snapshots of the solve, from the affine alone to the final field: play <code>t</code> to watch it converge. The moving image's own <code>t</code> axis must hold one time point, which the frames replace</td>
+</tr>
+<tr>
+<td><code>chunk</code></td>
+<td>the fixed image's</td>
+<td>output chunk shape of the spatial axes, C order</td>
+</tr>
+<tr>
+<td><code>interpolation</code></td>
+<td><code>linear</code>; <code>nearest</code> for uint32/uint64</td>
+<td>as for scene sources</td>
+</tr>
+<tr>
+<td><code>device</code></td>
+<td><code>auto</code></td>
+<td><code>auto</code> is the GPU with the most free memory, else the CPU; or <code>cpu</code>, <code>cuda:1</code>, ...</td>
+</tr>
+</tbody>
+</table>
+<p>The parameters follow the last <code>?</code>, so the moving image's URL may carry its own query (a
+<code>warp://</code> URL, say, which is how the tests check that a known swirl is undone). They are
+one Pydantic model, <code>RegisterParams</code>, whose JSON Schema (<code>chunkmirage schema</code>) the browser
+engine's types and form defaults are generated from: the
+<a href="https://yuriyzubov.github.io/chunkmirage/browser/register.html">browser page</a> solves the
+same spec on the viewer's GPU and shows the <code>chunkmirage serve 'register://…'</code> command for
+its settings, and fed the same affine and levels the two fields agree to 0.01 µm (median)
+on the fly templates, whose field moves tissue by 7 µm (median). It fits blocks on demand
+(<code>refine</code>) the same way, on the viewer's GPU, so the EASI-FISH pair above runs from a link
+with nothing installed:
+<a href="https://yuriyzubov.github.io/chunkmirage/browser/register.html?fixed=https://janelia-data-examples.s3.amazonaws.com/fly-efish/NP31_R2_20240119/NP31_R2_1_1_SS00090_Spab_546_Nplp1_647_1x_Central.zarr/0&amp;moving=https://janelia-data-examples.s3.amazonaws.com/fly-efish/NP31_R2_20240119/NP31_R2_2_1_SS00090_FMRFa_546_Proc_647_1x_Central.zarr/0&amp;refine=3&amp;iterations=100,40,40,40&amp;window=15,31,31,31">register.html with the EASI-FISH rounds</a>
+(it shows the two rounds; Register solves).</p>
+<h3 id="stack-sources-several-images-as-one-arrays-channels">Stack sources (several images as one array's channels)<a class="headerlink" href="#stack-sources-several-images-as-one-arrays-channels" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>stack://&lt;image&gt;|&lt;image&gt;[|&lt;image&gt;...]
+</code></pre></div>
+<p>serves images that share a grid as the channels of one <code>(c, z, y, x)</code> array (<code>(c, y, x)</code> for
+images in y and x, such as GeoTIFF bands): channel 0 is
+the first image's first channel, channel 1 the second's, and so on. The images must agree
+level by level on shape, voxel size, translation and units (the stack has as many levels as
+the image with the fewest), and each is anything <code>open_source</code> reads, so a stack can hold a
+stored volume next to a <code>synthetic://</code> or <code>register://</code> one. Nothing is copied: a stack chunk
+reads the same box of each image, through that image's own cache.</p>
+<p>A stack exists for ops that need two images at once. Such an op takes the channel axis and
+returns an array without it; the pipeline reads every channel and pads only the spatial axes
+by the op's halo, and <code>--chunk</code> may then give just the three spatial values. The first such
+op is <a href="../../reference/ops/"><code>contacts</code></a>: the voxels within a distance of both structures.
+On OpenOrganelle's published organelle predictions, mirrored back into the EM's frame (see
+below), followed by <code>label</code> to colour and size-filter the sites:</p>
+<div class="highlight"><pre><span></span><code>P=https://janelia-cosem-datasets.s3.amazonaws.com/jrc_hela-2/jrc_hela-2.n5/labels
+chunkmirage serve "stack://flip://$P/mito_pred?axes=y|flip://$P/er_pred?axes=y" \
+    --op contacts:distance=12 --op label:min_size=50 --chunk 16,128,128 --python-viewer
+</code></pre></div>
+<p><code>examples/contact_sites.py</code> serves the same with the EM underneath and the two predictions
+tinted, opens where the two organelles touch most, and takes new settings at a prompt.
+Only the chunks on screen are computed, out of 122 gigavoxels of cell, and a change of
+distance recomputes just those, from predictions the first pass left in the cache. The
+<code>distance</code> is in nanometres and each level counts it in its own voxels, so a contact means
+the same at every zoom (<code>radius</code>, in voxels, would reach proportionally further on a
+zoomed-out level, as op parameters in voxels do).</p>
+<h3 id="flip-sources-images-stored-the-other-way-round">Flip sources (images stored the other way round)<a class="headerlink" href="#flip-sources-images-stored-the-other-way-round" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>flip://&lt;image&gt;?axes=y[,x,...]
+</code></pre></div>
+<p>serves <code>&lt;image&gt;</code> mirrored along the named axes, every level in place: voxel <code>i</code> of a
+flipped axis of length <code>n</code> is voxel <code>n − 1 − i</code> of the image, and shape, voxel size,
+translation and chunks stay the image's. It repairs data whose orientation its metadata
+gets wrong: OpenOrganelle's N5 organelle predictions of jrc_hela-2 (<code>labels/*_pred</code>) are
+upside down in y relative to its EM, zarr and N5 alike (with the flip, every predicted
+mitochondrion voxel of a coarse slice lies on cell; without it a fifth do), though nothing
+in their attributes says so. The levels must share their centre, as OME-Zarr and COSEM
+pyramids whose extents halve evenly do, since a level mirrored about its own centre would
+otherwise drift from the others; <code>flip://</code> refuses a pyramid whose levels share their
+corner instead (as <code>synthetic://</code> levels do).</p>
+<h3 id="stitch-sources-tiles-stitched-by-interest-points-and-ransac">Stitch sources (tiles stitched by interest points and RANSAC)<a class="headerlink" href="#stitch-sources-tiles-stitched-by-interest-points-and-ransac" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>stitch://&lt;BigStitcher project.xml&gt;?channel=0&amp;model=translation&amp;epsilon=5&amp;threshold=0.005
+</code></pre></div>
+<p>stitches the tiles of one channel of a BigStitcher project when opened, as BigStitcher's
+interest-point registration does, then serves them fused, region by region: no fused copy
+is written. Each overlap of two tiles' stage positions, grown by <code>margin</code>, is read at the
+tiles' level <code>level</code>, and its bright blobs found in both tiles: local maxima of a
+difference of Gaussians (<code>sigma</code>, and 2^(1/4) times it, scaled to the same physical size on
+every axis) at least <code>threshold</code> of the region's intensity range, located to a fraction of
+a voxel. A point's descriptor is the offsets to <code>neighbors</code> of its <code>neighbors + redundancy</code>
+nearest neighbours (every such subset), which a shift leaves unchanged; two points match
+when their descriptors are the closest pair both ways and <code>significance</code> times closer than
+the next candidate. RANSAC then draws <code>iterations</code> minimal samples of the matches, keeps the
+<code>model</code> (<code>translation</code>, <code>rigid</code> or <code>affine</code>) that most matches agree with to within
+<code>epsilon</code>, refits it to them until they settle, and keeps the pair if it has <code>min_inliers</code>
+inliers and <code>min_inlier_ratio</code> of its matches. Finally every tile's correction is fitted to
+all the kept matches at once (each round refits each tile to where its neighbours put their
+ends of its matches), one tile of each linked group held still.</p>
+<p>The fused volume has a level for each level every tile has, the first tile's voxel size
+there, covering every placed tile. A region of it is each tile that reaches it, sampled
+trilinearly where its placement puts it, averaged with weights that fall off as a half
+cosine over <code>blend</code> at the tiles' edges in y and x, so the seams do not show. The project's
+images must be OME-Zarr (BigStitcher-Spark's <code>bdv.multimg.zarr</code> loader); a tile's stage
+position is its view transforms but the outermost ones named "Stitching Transform" (a
+stitching done before), and the log says how far the result lies from that one. The steps
+are functions of arrays in <code>chunkmirage.stitching</code> (numpy and scipy, so the <code>ops</code> extra), the
+same code the browser's stitch page runs in Pyodide.</p>
+<div class="highlight"><pre><span></span><code>chunkmirage<span class="w"> </span>serve<span class="w"> </span><span class="s1">'stitch://https://janelia-bigstitcher-spark.s3.amazonaws.com/Stitching/dataset.xml'</span><span class="w"> </span>--python-viewer
+</code></pre></div>
+<p>On BigStitcher-Spark's example (a larval fly CNS in 2 × 3 tiles), the defaults keep 8 of
+its 11 overlaps and put the tiles 0.4 µm (RMS) from BigStitcher's own phase-correlation
+stitching; opening takes about 9 s, most of it reading the overlaps.</p>
+<h3 id="geotiff-sources-cloud-optimized-geotiffs">GeoTIFF sources (cloud-optimized GeoTIFFs)<a class="headerlink" href="#geotiff-sources-cloud-optimized-geotiffs" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code>https://.../site.tif        (s3://, gs:// or a local path too; .tif or .tiff)
+</code></pre></div>
+<p>The tiled GeoTIFFs most geospatial and planetary rasters are published as, cloud-optimized
+ones (COGs) above all, read where they are looked at: the header once (a few range
+requests), then each tile a read covers, fetched by range, decoded by tifffile and kept in a
+256 MB cache. The pages of decreasing size inside a COG (its overviews) are the levels, so
+a zoomed-out view reads the small ones; masks are skipped. One sample per pixel; the axes
+are <code>y, x</code> in the projection's units (metres, unitless for a geographic raster in degrees),
+<code>y</code> counting down the image as rows do (minus the northing), voxel <code>(0, 0)</code> at the tiepoint
+(<code>ModelTiepoint</code>, <code>ModelPixelScale</code>). A float raster's <code>GDAL_NODATA</code> reads as NaN. Strip
+TIFFs (untiled) are refused: every read would fetch whole rows. Needs the <code>tiff</code> extra
+(tensorstore's own <code>tiff</code> driver reads only uint8 images). The browser engine reads them
+with geotiff.js, the same way, as <code>z, y, x</code> with one z.</p>
+<div class="highlight"><pre><span></span><code>chunkmirage<span class="w"> </span>serve<span class="w"> </span><span class="s1">'https://astrogeo-ard.s3.us-west-2.amazonaws.com/moon/lro/lola/barker_south_pole_dems/Site01/Site01.tif'</span><span class="w"> </span><span class="se">\</span>
+<span class="w">  </span>--op<span class="w"> </span>hillshade:azimuth<span class="o">=</span><span class="m">135</span>,altitude<span class="o">=</span><span class="m">10</span><span class="w"> </span>--chunk<span class="w"> </span><span class="m">256</span>,256<span class="w"> </span>--python-viewer
+</code></pre></div>
+<h3 id="stored-sources">Stored sources<a class="headerlink" href="#stored-sources" title="Permanent link">&para;</a></h3>
+<p>Sources are detected by content, not extension: <code>zarr.json</code> → zarr v3, <code>.zarray</code> → zarr v2,
+<code>attributes.json</code> → N5, <code>info</code> → precomputed. A group's levels are the paths in its
+<code>multiscales[0].datasets</code> (OME-NGFF, COSEM N5), in that order; without that, <code>s0, s1, ...</code>
+are probed. N5 and precomputed data are transposed to C order <code>(z, y, x)</code> on read.</p>
+<p>Remote stores are read the way a public dataset most likely lets one in, with credentials
+only when a public read is refused. <code>s3://</code> is read anonymously first, then with AWS's
+default credentials (environment, <code>~/.aws</code>, instance metadata), since S3 refuses even a
+public read signed with a stale or foreign key. <code>gs://</code> is read with Google's default
+credentials (anonymously without any), then through the bucket's public
+<code>https://storage.googleapis.com</code> URL, for credentials that are there but broken. Which way
+worked is remembered per bucket. Metadata reads give up after about five seconds of
+retries rather than tensorstore's default of many minutes, so a mistyped host fails fast.
+A zarr v2 compressor with members tensorstore rejects, such as the <code>checksum</code> newer
+numcodecs writes for zstd, is read without them.</p>
+<p>Voxel size, translation, units and axes are read per level, first match wins:</p>
+<table>
+<thead>
+<tr>
+<th>Format</th>
+<th>Metadata, in order of precedence</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>zarr v2/v3</td>
+<td>parent OME-NGFF <code>multiscales</code> entry whose <code>path</code> is this array, composed with the multiscale-level <code>coordinateTransformations</code> if present (0.4/0.5; in 0.6 those lead to other coordinate systems and are applied only through a <a href="#scene-sources-ome-zarr-06-transformations"><code>scene://</code></a> source, and axes come from the intrinsic coordinate system); else, for an array xarray wrote (geo, climate and solar data), its dimension names (<code>_ARRAY_DIMENSIONS</code>, or zarr v3 <code>dimension_names</code>) as the axes and the 1-D coordinate array named after each dimension as its spacing and origin, where evenly spaced and increasing (<code>days since …</code> and other CF time units become seconds, degrees unitless); else the array's own <code>resolution</code>/<code>voxel_size</code>, <code>offset</code>, <code>units</code>, <code>axis_names</code> (funlib) or <code>transform</code> (COSEM), C order</td>
+</tr>
+<tr>
+<td>N5</td>
+<td>the array's <code>transform</code> (COSEM, C order); the parent's <code>multiscales[].datasets[].transform</code> for this path; <code>pixelResolution</code>/<code>resolution</code> (array, else group) × <code>downsamplingFactors</code>, plus <code>offset</code>, x-first</td>
+</tr>
+<tr>
+<td>precomputed</td>
+<td><code>resolution</code> (nm) and <code>voxel_offset</code> (the first voxel's corner, in voxels)</td>
+</tr>
+<tr>
+<td>HDF5</td>
+<td><code>resolution</code>/<code>voxel_size</code> and <code>offset</code> attributes, C order</td>
+</tr>
+</tbody>
+</table>
+<p>A zarr array with CF packing attributes (<code>scale_factor</code>, <code>add_offset</code>) is read as float32
+in its units, <code>stored × scale_factor + add_offset</code>, and its <code>_FillValue</code> (else the array's
+fill value) as NaN: NASA's MUR sea temperature, stored as int16 hundredths of a degree
+offset from 298.15 K, reads as kelvin with land NaN. Arrays without those attributes are
+read as stored. Data whose axes are not named <code>z, y, x</code> (<code>time, lat, lon</code>) keeps its own
+names: the OME frontends type a time axis as <code>time</code> (by name or a time unit), and the
+viewer helpers show its last three axes as x, y and z.</p>
+<p>Unitless <code>z, y, x</code> axes are served as nanometres by every frontend (left without a unit,
+Neuroglancer would read OME axes as metres). Neuroglancer counts zoom
+(<code>crossSectionScale</code>) in the smallest scale among the viewer's dimensions, whatever their
+units, so beside a time axis in seconds a zoom of 1 is not one pixel per voxel:
+<code>chunkmirage.neuroglancer.cross_section_scale(dims, axis, voxels_per_pixel)</code> converts.</p>
+<p><code>offset</code>/<code>translate</code> are in world units. A translation is where voxel 0's centre is, as in
+OME-Zarr, COSEM's <code>transform</code> and CF coordinates. Formats that give voxel 0's corner are
+moved half a voxel along their spatial axes on reading: precomputed's <code>voxel_offset</code>, and
+funlib's <code>offset</code> (0 when only a <code>resolution</code> is given), which is how Neuroglancer and
+funlib place them. N5 levels with <code>pixelResolution</code> and <code>downsamplingFactors</code> and no
+offset follow BigDataViewer: a downsampled voxel's centre is the centre of the block it
+covers. Served as precomputed, <code>voxel_offset</code> is the translation less half a voxel,
+rounded to whole voxels, so a precomputed source served again keeps its offset. Served as
+OME-Zarr, the translation is written as is, and Neuroglancer moves it back half a voxel to
+the corner. So a volume shows in the same place whichever format serves it, except that
+precomputed cannot hold half-voxel offsets. Anything in the spec (<code>voxel_size</code>, <code>units</code>,
+<code>axes</code>, <code>translation</code>) overrides what was read. The spec's <code>select</code> pins non-spatial axes
+to one index each, <code>{"c": 1, "t": 0}</code> (<code>--select c=1,t=0</code>), so the ops see one channel of
+one time point as a <code>z, y, x</code> volume; only that channel is read. HDF5 uses <code>file.h5::/dataset</code> and needs
+the <code>hdf5</code> extra.</p>
+<h3 id="your-own-schemes-sources-from-other-packages">Your own schemes (sources from other packages)<a class="headerlink" href="#your-own-schemes-sources-from-other-packages" title="Permanent link">&para;</a></h3>
+<p>A package adds a URL scheme of its own the way it adds an op: an opener that takes the URL
+and returns a <code>MultiscaleSource</code> (a list of levels, each a <code>Source</code> with an <code>info</code> and a
+<code>read(box)</code>), listed under the <code>chunkmirage.sources</code> entry point with the scheme as its
+name. <code>open_source</code> and so <code>chunkmirage serve</code> then open <code>myscheme://...</code> like the built-in
+schemes, and pipelines, caching and every frontend work on it unchanged. An opener is passed
+<code>cache_bytes</code> (tensorstore's pool) and <code>cache</code> (the pipeline's chunk cache) if it takes
+them. <code>chunkmirage.sources.register_source(scheme, opener)</code> does the same in a running
+process, and <code>schemes()</code> lists what is known. The built-in schemes cannot be replaced.</p>
+<div class="highlight"><pre><span></span><code><span class="k">[project.entry-points.</span><span class="s2">"chunkmirage.sources"</span><span class="k">]</span>
+<span class="n">myscheme</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">"mypackage.sources:open_myscheme"</span>
+</code></pre></div>
+<p>A source suits work that reads the data itself rather than a padded block: a model wrapper
+that opens its own input, a format with its own reader, data computed from coordinates.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

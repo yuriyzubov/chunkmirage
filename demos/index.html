@@ -1,0 +1,1208 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spoof chunked array formats over HTTP with on-the-fly processing.">
+      
+      
+      
+        <link rel="canonical" href="https://yuriyzubov.github.io/chunkmirage/demos/">
+      
+      
+        <link rel="prev" href="..">
+      
+      
+        <link rel="next" href="../getting-started/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Demos - chunkmirage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#demos" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="chunkmirage" class="md-header__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chunkmirage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Demos
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="chunkmirage" class="md-nav__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    chunkmirage
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#in-the-browser-nothing-to-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the browser, nothing to install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://yuriyzubov.github.io/chunkmirage/browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo gallery (in your browser) ↗
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipelines, ops and halos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/interactivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing & doc policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#in-the-browser-nothing-to-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the browser, nothing to install
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#from-python" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        From Python
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yuriyzubov/chunkmirage/edit/main/docs/demos.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="demos">Demos<a class="headerlink" href="#demos" title="Permanent link">&para;</a></h1>
+<h2 id="in-the-browser-nothing-to-install">In the browser, nothing to install<a class="headerlink" href="#in-the-browser-nothing-to-install" title="Permanent link">&para;</a></h2>
+<p><a class="md-button md-button--primary" href="https://yuriyzubov.github.io/chunkmirage/browser/">▶ Open the gallery</a></p>
+<p><strong><a href="https://yuriyzubov.github.io/chunkmirage/browser/">The gallery</a></strong> lists demos that run
+entirely in your browser (Chrome, Edge or Safari 26, for WebGPU and service workers). Images
+are read from their public buckets and every chunk on screen is computed in the page when
+the viewer asks for it; nothing is uploaded or precomputed. Each card also shows the
+<code>chunkmirage serve</code> command that serves the same from Python, for Neuroglancer, Fiji,
+napari or a dask script.</p>
+<table>
+<thead>
+<tr>
+<th>demo</th>
+<th>what is computed per chunk</th>
+<th>data</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/register.html">Fly brain templates</a></td>
+<td>the moving brain resampled through a field solved on your GPU</td>
+<td>OME-Zarr RFC-5 examples</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/register.html?fixed=https://janelia-data-examples.s3.amazonaws.com/fly-efish/NP31_R2_20240119/NP31_R2_1_1_SS00090_Spab_546_Nplp1_647_1x_Central.zarr/0&amp;moving=https://janelia-data-examples.s3.amazonaws.com/fly-efish/NP31_R2_20240119/NP31_R2_2_1_SS00090_FMRFa_546_Proc_647_1x_Central.zarr/0&amp;refine=3&amp;iterations=100,40,40,40&amp;window=15,31,31,31">EASI-FISH rounds</a></td>
+<td>an affine found, a field solved, finer fields fitted where you zoom</td>
+<td>Janelia EASI-FISH, rounds 1 and 2</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=fires">Los Angeles fires, any reader</a></td>
+<td>burn severity (dNBR) by <code>normalized_difference</code> from two Sentinel-2 passes, before and after the Palisades and Eaton fires; read by your pick of Neuroglancer, OpenLayers (as GeoZarr) or GDAL itself in WebAssembly (as zarr v2), which writes a georeferenced GeoTIFF to download</td>
+<td>Sentinel-2 L2A, 2 January and 1 February 2025</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/stitch.html">Six tiles stitched by RANSAC</a></td>
+<td>interest points in every overlap, matches, RANSAC and the global fit (rerun as you move a setting, with inliers and rejected matches drawn), then each fused chunk: <code>chunkmirage.stitching</code>, as <code>stitch://</code> runs it</td>
+<td>BigStitcher-Spark's stitching example, a larval fly CNS</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=contacts">Organelle contact sites</a></td>
+<td>the mitochondria and ER predictions thresholded at 128 (mitochondria labelled), and <code>contacts</code> then <code>label</code> on the two, stacked and flipped into the EM's frame</td>
+<td>OpenOrganelle jrc_hela-2</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=spots">Single mRNA molecules</a></td>
+<td><code>spots</code> on both FISH channels</td>
+<td>Janelia EASI-FISH, fly central brain</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/track.html">Follow nuclei through two days</a></td>
+<td>not chunks but lineages: each nucleus double-clicked is followed frame by frame by its overlap with the next frame's nuclei (<code>chunkmirage.tracking</code>, one call a frame), reading only a box around it from each; when one collapses into mitosis and is lost, the new nuclei that appear near where it was (labels nothing covered the frame before) are guessed to be its daughters and followed too, a guess the segmentation cannot confirm; volumes plotted as frames come in; the nuclei followed served as a segmentation of their own, made per chunk from the bucket's (each lineage one segment in every frame, where the bucket numbers nuclei afresh in each), served again as tracking fills in frames the viewer has</td>
+<td>Allen Institute for Cell Science, Dixon et al. 2024: hiPS colony time-lapse, lamin B1 and nuclear segmentation</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=mandelbulb">A 3-D fractal to zoom into forever</a></td>
+<td>the Mandelbulb itself, <code>synthetic://mandelbulb</code>, computed by chunkmirage's synthetic source in the page's workers (nothing is read): a slice to zoom into, finer levels iterating more, and the bulb volume rendered, finer levels loading as you zoom into it (a 3-D panel's depth of 2 view heights and 512 samples: Neuroglancer picks one level for the whole depth)</td>
+<td>computed: an array 2^28 voxels across, 21 levels</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=mesh-bulb">The Mandelbulb as a solid surface that sharpens as you zoom</a></td>
+<td>a multi-resolution mesh: four levels of detail (the bulb at 256³ to 2048³), each node marching cubes over a chunk of <code>synthetic://mandelbulb</code>, Draco-encoded and padded, made when Neuroglancer asks for its bytes; zoom in and finer nodes replace the ones in view</td>
+<td>computed: levels 17 to 20</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=mesh-moon">Shackleton crater's rim in 3-D</a></td>
+<td>a terrain mesh of NASA's 5 m elevation (two triangles per 20 m cell), each fragment made when fetched, beside the elevation as stored</td>
+<td>LOLA south-pole elevation, Shackleton rim</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/map.html?card=moon">Where to land at the Moon's south pole</a></td>
+<td><code>hillshade</code> (the sun's direction and height at sliders, computed again for the tiles on screen) and <code>slope</code> (ground under a chosen slope coloured by the map) on 5 m elevation, any of 26 sites; drawn by OpenLayers, not Neuroglancer, reading the page's chunks as GeoZarr, fitted to the site so everything on screen is computed</td>
+<td>NASA's LOLA south-pole elevation maps (Barker et al.), cloud-optimized GeoTIFFs</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=hurricanes">Hurricanes' cold wakes</a></td>
+<td><code>diff</code> along time: each day's sea temperature minus the day before's; beside it the temperature itself, shifted from kelvin to °C by <code>scale</code></td>
+<td>NASA MUR sea-surface temperature, 2002 on, 0.01°</td>
+</tr>
+<tr>
+<td><a href="https://yuriyzubov.github.io/chunkmirage/browser/pipeline.html?card=fronts">Gulf Stream fronts</a></td>
+<td><code>gradient</code> along latitude and longitude, smoothed over 3 km first (<code>sigma</code>): two channels, coloured by the direction warmer water lies in and brightened by how fast it warms; the op returns only the interior it can compute, as a model does</td>
+<td>NASA MUR sea-surface temperature, 15 February 2018</td>
+</tr>
+<tr>
+<td>A solar flare (Python only)</td>
+<td><code>diff</code> along time on NASA's SDO images of the sun; the gallery shows its command, since NASA's bucket allows no browser page to read it</td>
+<td>SDO machine-learning dataset, AIA 171 Å</td>
+</tr>
+</tbody>
+</table>
+<p>The pipeline demos run chunkmirage's own Python in the page: Pyodide (Python compiled to
+WebAssembly, with numpy, and scipy only for pages whose ops import it) loads the package's
+ops and <code>chunkmirage.fused</code>, the code a server's pipeline stage runs, in a few web workers
+(4 to 7 s, once). Meanwhile the page opens the data and starts the viewer, whose first
+requests wait for Python; a package an op imports unannounced is loaded when it first does. One reader worker
+reads the images in TypeScript, as the Python sources do (OME-Zarr through zarrita, N5
+itself, xarray-written zarr with its coordinates and CF packing, <code>stack://</code> and <code>flip://</code>),
+decoding each store chunk once for the page; the page hands a worker the block a chunk
+needs and gets the chunk back. <code>tests/test_fused.py</code> checks that a chunk computed this way equals the pipeline's.
+On an RTX 2080 Ti workstation the contact-sites view filled in about 40 s, a spot or
+contact block taking 0.05 to 0.13 s in Python; chunks the viewer gave up on before their
+turn are dropped unrun, as the server drops them. Sources the workers compute themselves (<code>synthetic://</code>) skip the reader: a worker
+describes the source's levels, and generates each padded block where it computes the
+chunk. A demo is an entry of <code>web/src/cards.ts</code>:
+views (each a pipeline spec: source, <code>select</code>, ops, chunks) and a Neuroglancer layout, or
+for a map demo (<code>map.html</code>) OpenLayers layers, styles and sliders. The stitch page
+(<code>stitch.html</code>) runs <code>chunkmirage.stitching</code>'s steps in the same workers, one call each, and
+serves its fused volume as a view whose chunks it computes itself; the track page
+(<code>track.html</code>) runs <code>chunkmirage.tracking</code>'s step a frame at a time on boxes its reader reads
+at each timepoint (a read can pick its own entry of a source's other axes, <code>{t: 12}</code>). The pages share the
+engine (<code>web/src/engine.ts</code>), which serves the views as OME-Zarr and as
+<a href="../concepts/formats/#geozarr-for-map-clients-browser-engine">GeoZarr</a>.</p>
+<p>The hurricanes card shows the date at the viewer's position, and what the storms were doing
+that day, beside the viewer (which shows time only in seconds); its play button steps a
+day a second. It reads MUR, NASA's daily 1 km sea temperature of every ocean
+(6443 × 17999 × 36000 values), which has one resolution in 65 MB tiles of 5 days × 18° ×
+36°: it opens zoomed in on Katrina's track inside one tile, one download per 5 days, and zoomed out to the
+globe the viewer would fetch every tile at full resolution. Its contact-sites card starts
+from OpenOrganelle's predictions rather than its published segmentations, which are stored
+in 512³ blocks (268 MB decoded) at full resolution; <code>examples/contact_sites.py
+--segmentations</code> uses those from Python, next to OpenOrganelle's published contact sites.</p>
+<h2 id="from-python">From Python<a class="headerlink" href="#from-python" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>script</th>
+<th>shows</th>
+<th>needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>examples/contact_sites.py</code></td>
+<td>the contact-sites demo served by Python, recomputing at a prompt; <code>--segmentations</code> starts from OpenOrganelle's segmentations and shows its published contact sites too</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/fish_spots.py</code></td>
+<td>the spots demo served by Python, thresholds at a prompt</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/hurricane_wakes.py</code></td>
+<td>the hurricanes demo served by Python, any date and place, the lag at a prompt</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/model_at_one_resolution.py</code></td>
+<td>the shape of a live-inference op: a stand-in network that reads 8 nm voxels and writes two channels of 16 nm ones, served over OpenOrganelle's HeLa EM with the coarser levels downsampled from what it made (<a href="../concepts/pipelines/#ops-at-one-resolution">ops at one resolution</a>)</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/solar_flares.py</code></td>
+<td>the running difference of NASA's SDO images of the sun (no browser access to that bucket, so Python only), on the X1.6 flare of 10 September 2014</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/fly_brain_registration.py</code></td>
+<td>the fly templates through their published OME-Zarr 0.6 transformations (<code>scene://</code>)</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/track_nucleus.py</code></td>
+<td>a nucleus and its descendants followed through the colony time-lapse (<code>tracking.lineage</code>), volumes per frame written as CSV (the track page's work, from Python)</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/register_demo.py</code></td>
+<td>a deformable registration solved as the source opens, re-solved as you type settings</td>
+<td><code>uv sync --extra all --extra gpu</code> (or <code>--extra cpu</code>)</td>
+</tr>
+<tr>
+<td><code>examples/swirl_demo.py</code></td>
+<td>a procedural deformation and its field, animated on a time axis</td>
+<td><code>uv sync --extra all</code></td>
+</tr>
+<tr>
+<td><code>examples/demo.py</code></td>
+<td>one small volume served in every format at once, with a shared cache</td>
+<td><code>uv sync --extra ops</code></td>
+</tr>
+<tr>
+<td><code>examples/quickstart.py</code></td>
+<td>the library in thirty lines: a cached blur, a threshold, a server</td>
+<td><code>uv sync --extra ops</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each prints a viewer link; see <a href="../getting-started/">Getting started</a> for the basics.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

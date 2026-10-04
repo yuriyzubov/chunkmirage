@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>chunkmirage map</title>
+<style>:root{--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark;--bg:#0e1014;--panel:#161a20;--line:#262c36;--fg:#e7e9ec;--muted:#939cab;--faint:#5d6675;--accent:#7ab0ff;--accent-ink:#081225}*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:var(--bg);color:var(--fg);grid-template-columns:minmax(280px,330px) 1fr;font:13px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;display:grid}aside{background:var(--panel);border-right:1px solid var(--line);flex-direction:column;gap:16px;padding:18px 16px;display:flex;overflow-y:auto}a{color:var(--accent);text-decoration:none}h1{margin:0;font-size:15px;font-weight:650}p{margin:0}.muted{color:var(--muted)}.faint{color:var(--faint);font-size:12px}.label{letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-size:11px;font-weight:600}pre{border:1px solid var(--line);background:var(--bg);white-space:pre-wrap;word-break:break-all;border-radius:6px;margin:6px 0 0;padding:8px;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}button{background:var(--accent);color:var(--accent-ink);font:inherit;cursor:pointer;border:0;border-radius:6px;padding:6px 10px;font-weight:650}.state{color:var(--fg)}.date{font-variant-numeric:tabular-nums;font-size:18px;font-weight:650}#when{flex-direction:column;gap:4px;min-height:64px;display:flex}#when[hidden]{display:none}.counts{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12px}main{background:#000;min-width:0;position:relative}#map{position:absolute;inset:0}.controls{flex-direction:column;gap:10px;display:flex}.control{grid-template-columns:1fr auto;align-items:center;gap:2px 8px;display:grid}.control input[type=range]{width:100%;accent-color:var(--accent);grid-column:1/-1}.control output{font-variant-numeric:tabular-nums;color:var(--muted)}.control select{min-width:0;max-width:100%;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:4px;padding:2px 4px}.layers label{align-items:center;gap:6px;display:flex}.ol-zoom{top:8px;left:8px}.ol-scale-line{background:#0009}.empty{text-align:center;color:var(--faint);place-content:center;padding:24px;display:grid;position:absolute;inset:0}@media (max-width:720px){body{grid-template-rows:auto 70vh;grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}}</style>
+  <script type="module" crossorigin src="./assets/map-D6ZrCkJj.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="modulepreload" crossorigin href="./assets/cards-CdoSt5Io.js">
+  <link rel="modulepreload" crossorigin href="./assets/preload-helper-uBIymjUX.js">
+  <link rel="modulepreload" crossorigin href="./assets/ops-upVICUsh.js">
+  <link rel="modulepreload" crossorigin href="./assets/proj-CqRzFpSg.js">
+  <link rel="modulepreload" crossorigin href="./assets/intersectsextent-Nwz56eRX.js">
+  <link rel="modulepreload" crossorigin href="./assets/size-QUyJUaN5.js">
+  <link rel="modulepreload" crossorigin href="./assets/tilecoord-chCoyzr3.js">
+  <link rel="modulepreload" crossorigin href="./assets/GeoZarr-DSL-PfnX.js">
+  <link rel="modulepreload" crossorigin href="./assets/chunkmirage.schema-C17jJkF5.js">
+  <link rel="modulepreload" crossorigin href="./assets/engine-CEBqtyxl.js">
+  <link rel="modulepreload" crossorigin href="./assets/View-BWRvAGuu.js">
+  <link rel="modulepreload" crossorigin href="./assets/Event-Dw4wM2Vc.js">
+  <link rel="modulepreload" crossorigin href="./assets/Map-ctr8QSjN.js">
+  <link rel="modulepreload" crossorigin href="./assets/control-3Rf57Z6x.js">
+  <link rel="modulepreload" crossorigin href="./assets/WebGLTile-nxWDeood.js">
+  <link rel="stylesheet" crossorigin href="./assets/ol-c_1sG1-7.css">
+</head>
+<body>
+<aside>
+  <p><a href="./">← All demos</a></p>
+  <div>
+    <h1 id="title">chunkmirage demo</h1>
+  </div>
+  <p class="muted" id="blurb"></p>
+  <p class="faint">Data: <span id="data"></span></p>
+  <section class="controls" id="controls" hidden><div class="label">Settings</div></section>
+  <section class="layers" id="layers" hidden><div class="label">Layers</div></section>
+  <section>
+    <div class="label">Status</div>
+    <p class="state" id="state">Starting…</p>
+    <p class="counts" id="counts"></p>
+  </section>
+  <section>
+    <div class="label">The same from Python</div>
+    <pre id="command"></pre>
+    <p style="margin-top: 6px"><button id="copy" type="button">Copy</button></p>
+  </section>
+  <p class="faint">Everything here runs in this browser: the data is read from its public
+    buckets, and each tile is computed by chunkmirage's own Python ops, run by Pyodide in web
+    workers, then served to the OpenLayers map as GeoZarr through a service worker. Nothing is
+    uploaded.</p>
+</aside>
+<main>
+  <div class="empty" id="empty">Loading…</div>
+  <div id="map"></div>
+</main>
+</body>
+</html>

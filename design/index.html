@@ -1,0 +1,1719 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spoof chunked array formats over HTTP with on-the-fly processing.">
+      
+      
+      
+        <link rel="canonical" href="https://yuriyzubov.github.io/chunkmirage/design/">
+      
+      
+        <link rel="prev" href="../getting-started/">
+      
+      
+        <link rel="next" href="../concepts/pipelines/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Architecture & design - chunkmirage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#chunkmirage-design" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href=".." title="chunkmirage" class="md-header__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chunkmirage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Architecture & design
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href=".." title="chunkmirage" class="md-nav__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    chunkmirage
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href=".." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://yuriyzubov.github.io/chunkmirage/browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo gallery (in your browser) ↗
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-is-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it is for
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What it is for">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-it-does-not-add-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it does not add value
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-abstraction-every-stage-is-a-chunked-cacheable-array" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core abstraction: every stage is a chunked, cacheable array
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewer-cache-busting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewer cache busting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coordinate-transformations-and-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coordinate transformations and registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-and-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Language and stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extensibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extensibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-stays-in-the-core-a-proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What stays in the core (a proposal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-side-browser-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client-side / browser roadmap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment shapes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipelines, ops and halos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/caching/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/interactivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../concepts/formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing & doc policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-it-is-for" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What it is for
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="What it is for">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#where-it-does-not-add-value" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it does not add value
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#architecture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Architecture
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Architecture">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#core-abstraction-every-stage-is-a-chunked-cacheable-array" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Core abstraction: every stage is a chunked, cacheable array
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#viewer-cache-busting" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Viewer cache busting
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#coordinate-transformations-and-registration" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Coordinate transformations and registration
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#language-and-stack" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Language and stack
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extensibility" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Extensibility
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Extensibility">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#what-stays-in-the-core-a-proposal" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What stays in the core (a proposal)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#client-side-browser-roadmap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Client-side / browser roadmap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployment-shapes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Deployment shapes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#open-questions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Open questions
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yuriyzubov/chunkmirage/edit/main/docs/design.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="chunkmirage-design">chunkmirage design<a class="headerlink" href="#chunkmirage-design" title="Permanent link">&para;</a></h1>
+<h2 id="what-it-is-for">What it is for<a class="headerlink" href="#what-it-is-for" title="Permanent link">&para;</a></h2>
+<p>Viewers such as Neuroglancer, BigDataViewer, vizarr and napari, and libraries such as
+dask and tensorstore, can read chunked array formats over plain HTTP. chunkmirage answers
+those HTTP requests itself, so the "dataset" can be anything computable per chunk. It is
+meant to be the reusable, general form of a trick that had been re-implemented per project,
+and it was inspired by the two that showed it:</p>
+<ul>
+<li><a href="https://github.com/stuarteberg/example-virtual-n5">example-virtual-n5</a>: a Flask app that
+  synthesises N5 metadata and chunks. It proved the idea: one format, one dataset.</li>
+<li><a href="https://github.com/janelia-cellmap/cellmap-flow">cellmap-flow</a>, which grew out of
+  example-virtual-n5: the same trick wrapped around live model inference, with a UI for
+  swapping models and post-processing.</li>
+</ul>
+<p>chunkmirage factors out the part both share and generalises it to any format, source and
+computation:</p>
+<table>
+<thead>
+<tr>
+<th>concern</th>
+<th>example-virtual-n5</th>
+<th>cellmap-flow</th>
+<th>chunkmirage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>served formats</td>
+<td>N5</td>
+<td>N5</td>
+<td>N5, Zarr v2, Zarr v3, precomputed, at once</td>
+</tr>
+<tr>
+<td>source formats</td>
+<td>none (synthetic)</td>
+<td>zarr/n5 via tensorstore</td>
+<td>zarr v2/v3, n5, precomputed, hdf5; file/s3/gcs/http</td>
+</tr>
+<tr>
+<td>processing</td>
+<td>hard-coded</td>
+<td>inference + post-proc</td>
+<td>pipeline of pluggable ops with halos</td>
+</tr>
+<tr>
+<td>caching</td>
+<td>none</td>
+<td>per request</td>
+<td>per-stage LRU keyed by pipeline hash</td>
+</tr>
+<tr>
+<td>reconfiguration</td>
+<td>restart</td>
+<td>custom UI/API</td>
+<td>REST (and MCP) with cache-busting URLs</td>
+</tr>
+<tr>
+<td>deployment</td>
+<td>Flask</td>
+<td>Flask + gunicorn</td>
+<td>ASGI (Starlette) library + CLI</td>
+</tr>
+</tbody>
+</table>
+<p>Projects like cellmap-flow are natural consumers (it could shrink to "a set of inference
+ops plus a UI" on top of chunkmirage), and serve as a realistic test of the design, but
+chunkmirage is not built around any one of them.</p>
+<h3 id="where-it-does-not-add-value">Where it does <em>not</em> add value<a class="headerlink" href="#where-it-does-not-add-value" title="Permanent link">&para;</a></h3>
+<p>Neuroglancer already runs GLSL shaders per voxel on the GPU. Pointwise operations on a
+single source (thresholding, windowing, colormaps, channel mixing) are better done there,
+client side, with zero latency. chunkmirage earns its keep when the op is:</p>
+<ul>
+<li><strong>non-local</strong>: filters, morphology, connected components, distance transforms, meshes;</li>
+<li><strong>learned</strong>: model inference (cellmap-flow's case), where GPU + weights live server-side;</li>
+<li><strong>geometric</strong>: resampling under affine or deformation-field registration, on-the-fly
+  downsampling for sources lacking a pyramid, reslicing;</li>
+<li><strong>multi-source</strong>: masking one volume by another, differencing two conditions;</li>
+<li><strong>a format bridge</strong>: exposing HDF5, a TIFF stack, or a proprietary reader as zarr to any
+  viewer, or exposing zarr v3 to a viewer that only speaks N5.</li>
+</ul>
+<p>Thresholding is still the right <em>demo</em> because it is instantly legible, and combined with a
+cached expensive upstream stage (inference) it shows the caching story: change the level,
+nothing upstream recomputes.</p>
+<h2 id="architecture">Architecture<a class="headerlink" href="#architecture" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>                 ┌────────────────────────────────────────────────────────────┐
+  HTTP request   │ server.py (Starlette)                                      │
+ ───────────────►│  /{name}/{fmt}/…  → Frontend.resolve → Metadata | ChunkReq │
+                 │  /api/…           → DatasetRegistry (live edit)            │
+                 └───────────────┬────────────────────────────────────────────┘
+                                 │ pipeline.chunk(level, index)
+                 ┌───────────────▼────────────────────────────────────────────┐
+                 │ Pipeline (per scale level)                                 │
+                 │  ChunkedSource(raw) ─► ChunkedSource(op₁) ─► … ─► op_n     │
+                 │       ▲ cache            ▲ cache if op.cache               │
+                 │  read_padded(box + halo) between every stage               │
+                 └───────────────┬────────────────────────────────────────────┘
+                                 │ Source.read(box)
+                 ┌───────────────▼────────────────────────────────────────────┐
+                 │ Sources: TensorStoreSource (zarr2/3, n5, precomputed over  │
+                 │ file/s3/gcs/http, own byte cache), HDF5Source (h5py)       │
+                 └────────────────────────────────────────────────────────────┘
+</code></pre></div>
+<h3 id="core-abstraction-every-stage-is-a-chunked-cacheable-array">Core abstraction: every stage is a chunked, cacheable array<a class="headerlink" href="#core-abstraction-every-stage-is-a-chunked-cacheable-array" title="Permanent link">&para;</a></h3>
+<p><code>ChunkedSource</code> wraps a <code>compute_chunk(index)</code> function and an LRU. <code>read(box)</code> gathers
+covering chunks and slices. The raw source is stage 0 (re-chunked to the output chunk
+shape). Each op becomes stage <em>k</em>, whose <code>compute_chunk</code> reads the halo-padded box from
+stage <em>k-1</em>, applies the op, and crops. This one mechanism gives:</p>
+<ul>
+<li><strong>raw caching</strong> (never re-download a chunk while the user fiddles downstream),</li>
+<li><strong>stage caching</strong> (cache inference output; threshold it for free),</li>
+<li><strong>halos</strong> (neighbourhood ops read padded regions from the previous stage, which itself
+  serves from its cache where possible),</li>
+<li><strong>re-chunking</strong> (output chunk shape independent of source chunk shape; useful because
+  inference block sizes and viewer-friendly chunk sizes differ).</li>
+</ul>
+<p>Cache keys are <code>(stage_hash, chunk_index)</code>; <code>stage_hash</code> folds in the source identity,
+chunk shape, and every op spec up to that stage. Editing op <em>k</em> changes hashes for stages
+≥ <em>k</em> only, so upstream entries stay valid without any explicit invalidation logic.
+This is the same idea as tensorstore's <code>virtual_chunked</code> driver, kept in numpy so the ops
+stay trivially writable.</p>
+<p>Levels are computed independently, the same ops on each, except from an op that declares
+the voxel size it reads (a model trained at one resolution). That one runs on a single
+level and the coarser levels are downsampled from its cached output, rather than running
+it on data it was not trained for, or once per level. The browser engine keeps the simpler
+rule: every op on every level, on its level's grid.</p>
+<h3 id="viewer-cache-busting">Viewer cache busting<a class="headerlink" href="#viewer-cache-busting" title="Permanent link">&para;</a></h3>
+<p>Viewers cache chunks by URL. The API hands out source URLs of the form
+<code>/{name}/@{digest}/{fmt}</code> where <code>digest</code> is the pipeline hash. After an edit the digest
+changes, the viewer sees a new URL, and refetches. The un-versioned path also works.</p>
+<h3 id="coordinate-transformations-and-registration">Coordinate transformations and registration<a class="headerlink" href="#coordinate-transformations-and-registration" title="Permanent link">&para;</a></h3>
+<p>Viewers apply affine transforms themselves, but none applies a displacement field (as of
+OME-Zarr 0.6, where they became standard), and before 0.6 every registration tool stored
+warps in its own format. So a registration is read into one small internal model,
+<code>chunkmirage.transforms</code> (affine, displacement and coordinate fields, sequence,
+byDimension, bijection), by one reader per format; <code>chunkmirage.ngff</code> reads OME-Zarr 0.6,
+and bigstream, BigWarp or ITK readers can be added without touching the resampler.
+A field only has to answer <code>sample(points)</code>, so procedural fields fit too: <code>warp://</code>
+sources twist an image through swirls computed from coordinates, which makes a
+deformation you can change continuously without storing anything, or sweep along a <code>t</code>
+axis of frames that a viewer plays without refetching anything it has already shown.</p>
+<p>The resampler is a <strong>source</strong> (<code>scene://</code>), not an op, for three reasons: the output grid
+belongs to another image, not to the input; each output level should read a different
+source level (chosen through the transform); and the region an output chunk needs is the
+exact bounding box of its transformed voxel centres, which no fixed halo describes. As a
+source it is stage 0 of the pipeline, so its chunks are cached like raw chunks and every
+op downstream sees the registered image. The chain for each level is simplified once
+(runs of linear pieces fold into one matrix), so a typical grid → field → affine → source
+index chain costs two small matrix products and one field lookup per voxel.</p>
+<p>Inverses are taken only in closed form or from a stored <code>bijection</code>, unless the URL asks
+for <code>inverse=approx</code>; an estimated inverse of a folding field would silently show wrong
+data, so unconvergent points are left empty instead.</p>
+<p>Solving a registration is a source too (<code>register://</code>): opening it fits a displacement
+field on a GPU from a few coarse levels, keeps the field in memory and serves every level
+through the same resampler. The split follows the costs. The field is global (any output
+chunk may depend on all of it) but cheap to fit at coarse levels and small to keep, while
+resampling full resolution is expensive and local, which is exactly what chunk-by-chunk
+serving does lazily. So the fit happens once, when the source opens, and nothing of the
+registered volume is ever written. That split holds while the field can be coarse. Where
+it cannot, <code>refine=</code> moves the fit into the on-demand path too: the field of each finer
+level becomes a chunked source of its own, a lattice <code>grid</code> voxels apart in blocks of
+<code>block</code> voxels, fitted from the solved field over the block plus a <code>halo</code> of context when a
+chunk it covers is first requested, coarse to fine within the block, and kept in the
+server's chunk cache like any stage's chunks. Blocks are sized on their own, not as the output's chunks: a chunk's field reaches
+into the lattice beyond it, so a thin chunk straddles two thin blocks, and each block pays
+for its context and correlation windows on every side. On the EASI-FISH pair, blocks of
+64×128×128 voxels (the default) align full-resolution chunks better than blocks of
+16×128×128 (correlation 0.851 against 0.829 on one), since they are deep enough to fit
+coarse to fine, and in Python they take half the GPU time. (Fitting each level's blocks from the level above's instead was tried first: on a
+pyramid whose z axis is never downsampled, one full-resolution chunk pulled in 48 blocks
+across three levels, most of them for context, and a minute of GPU time.) The requests then
+schedule the registration, so its cost follows what is looked at rather than the volume,
+and a block can afford what a whole-image fit cannot (a finer lattice, more iterations).
+Blocks fitted separately disagree where they meet, and kept side by side they made the
+field step at their edges (up to 0.9 µm per voxel on the EASI-FISH pair, three times the
+steepest 1% inside a block). So each block keeps its fit over its context too, and
+neighbouring blocks are blended across that overlap, as bigstream's distributed pipeline
+does, with weights that are 1 over a block's own points and fall off linearly into its
+context; the field then changes no faster across block edges than inside them. Blending
+the fits, rather than fitting each block against its neighbours' results, keeps every
+block's fit a function of the solved field and the images alone, so the result is the
+same whatever order a client's requests fit blocks in. Nothing of this is viewer-specific: any client reading chunks
+drives it. Measured on two rounds of a public EASI-FISH fly brain, the blocks raise the
+correlation of full-resolution chunks well above the coarse field's, the more the wider
+their window (see <a href="../concepts/formats/#register-sources-deformable-registration-on-a-gpu">register sources</a>).
+PyTorch supplies autograd and grid sampling, as an
+optional dependency; the objective is local cross-correlation with flat windows left out,
+because damping them with a constant instead rewards warps that add contrast (the tests
+catch that). Adam is written out rather than taken from <code>torch.optim</code>, whose import loads
+<code>torch._dynamo</code>: about 9 s from a network file system.</p>
+<h2 id="language-and-stack">Language and stack<a class="headerlink" href="#language-and-stack" title="Permanent link">&para;</a></h2>
+<p><strong>Server: Python.</strong> The whole point is that scientists write ops in numpy/torch/scipy;
+that ecosystem, plus the tensorstore binding, decides it. The per-request Python overhead
+(~0.1 ms routing) is negligible next to a chunk read, a codec, or a network round trip.
+The hot paths (tensorstore I/O, numcodecs/blosc/gzip, numpy kernels, torch) all release
+the GIL, so one process serves many chunks concurrently from a threadpool. Multiple
+uvicorn workers scale further at the cost of per-process caches.</p>
+<p><strong>Why not Rust for the server.</strong> A Rust server (axum + <code>zarrs</code>) would win on pure
+pass-through/transcoding throughput, but the interesting work is user code, and embedding
+Python for it would recreate the same GIL story with more moving parts. If a pure
+transcoding proxy ever becomes a bottleneck, the format layer (frontends/codecs) is the
+natural piece to reimplement, ideally in a crate compiled both to a Python extension and
+to WebAssembly (see below). <code>zarrs</code> already targets both.</p>
+<p><strong>Why tensorstore for sources.</strong> One API for zarr v2, zarr v3, n5 and precomputed across
+file, S3, GCS and HTTP; async C++ I/O; a built-in byte cache; and future <code>virtual_chunked</code>
+interop. It does not read HDF5; h5py covers that (serialised behind a lock, since HDF5 is
+not thread-safe).</p>
+<p><strong>Packaging: uv.</strong> Everything the core needs is on PyPI. cellmap-flow can keep pixi for
+CUDA/torch and depend on chunkmirage as a normal PyPI/git dependency.</p>
+<h2 id="extensibility">Extensibility<a class="headerlink" href="#extensibility" title="Permanent link">&para;</a></h2>
+<p>Three layers, from most to least structured:</p>
+<ol>
+<li><strong>Built-in ops</strong>: pointwise (threshold, cast, scale), filters (gaussian, uniform, dog),
+   morphology, connected components with a size filter (<code>label</code>), spot detection (<code>spots</code>),
+   and <code>contacts</code> over the channels of a <code>stack://</code> source, the first op over several images
+   (the stack reads them on one grid; the op drops the channel axis), and <code>downsample</code>.
+   Planned: distance transform, a <code>Combine</code> op taking another pipeline as input. Registration is a source,
+   not an op (see below).</li>
+<li><strong>Plugins</strong>: subclass <code>Op</code>, declare <code>name</code>, <code>halo</code>, <code>cache</code>, register via the
+   <code>chunkmirage.ops</code> entry point. cellmap-flow's models become one plugin package.
+   Params are pydantic fields, so every op ships a JSON schema the UI/MCP can render.
+   Source schemes come through <code>chunkmirage.sources</code>, and endpoints of a plugin's own
+   through <code>chunkmirage.routes</code> (<a href="../reference/api/#routes-of-your-own">API</a>); the app can
+   also be mounted inside another one.</li>
+<li><strong>Live control</strong>: the REST API takes a <code>PipelineSpec</code> (source + list of op specs). An
+   MCP server is a thin wrapper over it (tools: <code>list_ops</code>, <code>set_pipeline</code>,
+   <code>neuroglancer_link</code>, <code>cache_stats</code>), so an LLM agent can drive the viewer. Arbitrary
+   code (a <code>PythonOp</code> taking source text) is possible but off by default; it is only
+   acceptable on a single-user machine.</li>
+</ol>
+<h3 id="what-stays-in-the-core-a-proposal">What stays in the core (a proposal)<a class="headerlink" href="#what-stays-in-the-core-a-proposal" title="Permanent link">&para;</a></h3>
+<p>chunkmirage is worth most as the engine others build on: sources, formats, the cached
+pipeline, the demand queue and the plugin entry points. Domain features belong in the
+applications built on it, where the attention for those uses goes: cellmap-flow for models,
+others later. A core that collects one field's ops and application features stops looking
+general, competes with what is built on it, and has its API shaped by one domain. The rule
+of thumb: if someone serving data from a different field would not use it, it does not
+belong in the core.</p>
+<p>The demos show the range well and should stay. Their ops and sources, though, live in the
+core package today. This proposal moves them into plugin packages that register through
+the same <code>chunkmirage.ops</code> and <code>chunkmirage.sources</code> entry points any plugin uses:</p>
+<table>
+<thead>
+<tr>
+<th>package</th>
+<th>ops and sources</th>
+<th>extra dependencies it takes along</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>core</td>
+<td><code>threshold</code>, <code>cast</code>, <code>scale</code>, <code>gaussian</code>, <code>uniform</code>, <code>dog</code>, <code>diff</code>, <code>gradient</code>, <code>downsample</code>, <code>morphology</code>, <code>label</code>; <code>synthetic://</code>, <code>scene://</code>, <code>warp://</code>, <code>stack://</code>, <code>flip://</code>; surface meshes</td>
+<td>scipy for the filters</td>
+</tr>
+<tr>
+<td><code>chunkmirage-geo</code></td>
+<td><code>normalized_difference</code>, <code>slope</code>, <code>hillshade</code>; GeoTIFF sources; terrain meshes</td>
+<td>tifffile, imagecodecs</td>
+</tr>
+<tr>
+<td><code>chunkmirage-microscopy</code></td>
+<td><code>spots</code>, <code>contacts</code>, <code>chunkmirage.tracking</code>; <code>stitch://</code>; <code>register://</code> and its solver</td>
+<td>torch</td>
+</tr>
+</tbody>
+</table>
+<p>The generic building blocks stay in the core, op by op: filters, morphology, labelling,
+downsampling, differences, gradients, resampling through OME-Zarr transformations.</p>
+<ul>
+<li><strong>Benefits.</strong> The core stays small and plainly general, with fewer optional
+  dependencies. The plugin API gets exercised by real use, so its gaps show before a third
+  party finds them. The demos become templates for building a domain on chunkmirage.</li>
+<li><strong>The cheapest start.</strong> Subpackages in this repo with their own <code>pyproject.toml</code>
+  (<code>plugins/geo/</code>, <code>plugins/microscopy/</code>), installed editable in development and CI, and a
+  <code>demos</code> extra that installs both so the gallery keeps working. Separate repositories
+  later, if ever.</li>
+<li><strong>Costs.</strong> More packaging and CI. The gallery cards and the docs must say which plugin
+  each demo needs. The browser engine writes the package's own ops into Pyodide, so it must
+  learn to load a plugin's ops too. <code>tests/test_docs.py</code> checks that every registered op is
+  documented, so the plugins need docs pages of their own, or the check must span them.</li>
+</ul>
+<p>Nothing has moved: this is for the owners to decide.</p>
+<h2 id="client-side-browser-roadmap">Client-side / browser roadmap<a class="headerlink" href="#client-side-browser-roadmap" title="Permanent link">&para;</a></h2>
+<p>Fully client-side is feasible and would make a compelling hosted demo:</p>
+<ul>
+<li>Host a static page containing Neuroglancer (or vizarr) <strong>plus a Service Worker</strong> on the
+  same origin. The service worker intercepts <code>/virtual/…</code> requests, fetches real chunks
+  from any CORS-enabled zarr/n5/precomputed URL (via <code>zarrita.js</code> or tensorstore-style
+  key parsing), decodes with WASM codecs (<code>numcodecs.js</code>), runs the pipeline, and responds
+  with <strong>precomputed <code>raw</code></strong> chunks (literally the little-endian bytes; encoding is free).</li>
+<li>Pointwise and filter ops in <strong>WebGPU compute shaders</strong>; inference via <strong>ONNX Runtime
+  Web (WebGPU)</strong>; both share the JSON <code>PipelineSpec</code> with the Python server so the same
+  spec runs on either side.</li>
+<li>Same-origin is required because service workers only see requests from pages in their
+  scope; a hosted <code>neuroglancer-demo.appspot.com</code> cannot be pointed at an in-browser
+  server. Hosting our own Neuroglancer build is fine and commonly done.</li>
+<li>A shared Rust crate (chunk key parsing, zarr/n5/precomputed codecs) compiled to WASM and
+  to a Python extension would keep the two implementations from drifting. Not needed to
+  start.</li>
+<li>It lives in this repo as <code>web/</code>, a TypeScript project (Vite) next to the Python package,
+  because the two share one definition: the Pydantic models (<code>PipelineSpec</code>, each op's
+  parameters, <code>RegisterParams</code>) export a JSON Schema (<code>chunkmirage schema</code>), and <code>web/</code>
+  generates its TypeScript types and form defaults from the committed copy. A model change
+  and the page it breaks then land in one pull request: <code>tests/test_schema.py</code> fails until
+  the copy is regenerated, and the <code>web</code> CI job until the types are. The Python package
+  stays standalone all the same, since its wheel holds only <code>src/chunkmirage</code>. Demos that
+  span several projects, and plugins with ops for both engines, would be repos of their
+  own, built on the published packages.</li>
+<li>The first piece is registration: <code>web/register.html</code> reads two OME-Zarr
+  images from their URLs with <code>zarrita.js</code> (range requests into sharded stores, zstd and
+  blosc through numcodecs) and fits the same field as <code>register://</code> in WebGPU compute
+  shaders, with the gradients written out by hand (WGSL has no autograd, and no float
+  atomics, so each control point gathers its voxels' gradients). The local correlation's
+  window sums are running sums along each axis in the shaders (one thread per line), so
+  a wider window costs nothing extra and the solve is about twice as fast as with a
+  per-voxel box filter. PyTorch keeps cuDNN's separable box filter: a prefix-sum version
+  measured 4x slower at the default window (68 vs 17 ms per pooling on a 2^25-voxel
+  level) and only wins past windows of about 60. Fed the same data, its
+  field matches the PyTorch solver's to about 1% (a median 0.25 µm on a gut whose field
+  moves tissue by 21 µm), and so do its scores. It then shows before and after in
+  Neuroglancer hosted on the page's origin: the page's service worker hands the viewer's
+  requests for the registered volume to the page, whose web workers resample the moving
+  image through the field as <code>scene://</code> does, reading it from its URL through a cache of
+  decoded blocks. The viewer caches what it shows and the page what it reads (every read of
+  the stores goes through one cache in the service worker, shared by the page, its workers
+  and the viewer; see <a href="../concepts/caching/#in-the-browser-engine">caching</a>); the page only
+  raises the viewer's memory limits to twice their defaults, since a chunk the viewer drops
+  and asks for again costs a read of the moving image and a resample. Its 3D maximum projections
+  are a checkbox, on unless the link says <code>3d=0</code>: volume rendering asks for chunks across
+  the whole visible volume, which on a whole-organ image keeps the workers busy, so a slow
+  computer is better off without. It asks for coarse levels only until the view is zoomed
+  in, so it does not set off <code>refine</code>'s block fits across the organ (none in 150 s on the
+  EASI-FISH pair). <code>refine</code> runs in the page too: a chunk worker that needs
+  the field of a refined level asks the page for the window of that level's lattice its
+  chunk touches, and the page fits the blocks it covers on its GPU (<code>blocks.ts</code>, one at a
+  time, as <code>register.py</code> does), keeps them, and sends the window back; the after and field
+  views share the blocks. The fits wait in one queue, which knows only the requests, so it
+serves any client the same way, with the rules the Python server applies to all its work
+(<a href="../concepts/caching/#order-of-work-and-requests-given-up-on">caching</a>). A client that stops waiting for a chunk aborts its request;
+a service worker is not told of that (Chrome 148), but it answers each chunk request at
+once with a head and a body it streams later, and a reply whose request was aborted has its
+stream cancelled, which it does see. So every request holds a claim on the blocks it needs,
+a cancelled request releases its claims, and a waiting block no request claims any more is
+dropped without being fitted; one already fitting finishes and is kept. Zooming the
+EASI-FISH pair to full resolution and then panning away, Neuroglancer gave up on 430 of the
+973 requests it made for the refined views, and 29 waiting blocks were dropped. Among the
+blocks still wanted, the finest level goes first: a viewer asks for coarser levels of the
+same place to show while the fine chunks compute, and those placeholders are worth fitting
+only once nothing finer waits (on the EASI-FISH zoom the full-resolution chunks on screen
+were answered after a median 103 s instead of 166 s, the same blocks fitted in all). Within
+a level the first asked for goes first. (Taking the latest burst of requests first was tried
+and removed: nothing measured it, and a client that stops wanting a block cancels its claim
+anyway.) Three run at once, so the GPU fits one while the next ones read, and the rest
+cannot flood the network. The page reports the queue as it goes: blocks fitting and waiting
+per level, those dropped because nobody waits for them any more, fitted per level, and how
+much of what was read came from the cache. Fed the same affine and
+  levels (the page's "same in Python" command carries them), its refined
+  full-resolution chunks of the fly templates match Python's to a median 0.005 µm in the
+  field (0.03 µm at the 95th percentile), as close as PyTorch on CUDA and on the CPU come
+  to each other, while the refinement itself moves 60% of the tissue's voxels by more
+  than a grey level. On emulated WebGPU (SwiftShader) a block takes about 13 s; a real GPU
+  is many times faster. A coarsest level
+  larger than the page's GPU budget (2^22 voxels, where a pyramid stops early or stays
+  deep in z) is halved on the page before the solve, as a stored pyramid would be (the
+  voxels' means, then normalized). So all of <code>register://</code> runs client side. WebGPU and service workers
+  need a secure page, and a service worker will not run on a certificate that was only
+  clicked through: <code>web/serve.py</code> serves the build over https with the
+  self-signed certificate (trusted once in the system; it is made to the rules macOS and
+  browsers apply even then, at most 398 days and for server authentication) or over plain
+  http for <code>localhost</code>, and relays the standard Neuroglancer client under <code>/ng/</code>. The docs
+  site needs neither: the docs workflow builds Neuroglancer from Google's source at a
+  pinned tag (cached, so about 15 s the first time) and publishes it at <code>browser/ng/</code>
+  next to the page, at
+  <a href="https://yuriyzubov.github.io/chunkmirage/browser/register.html">browser/register.html</a>.
+  Nothing of Neuroglancer is kept in this repo. With no images in its link the page opens
+  with an example, two fly brain templates (JRC2018F and FCWB) as they are stored:
+  <code>web/scripts/fetch_example.py</code> copies them at deploy time from the OME-NGFF
+  transformation examples, whose bucket allows no CORS and uses a draft 0.6 layout,
+  rewriting only the metadata as 0.5, and the site serves them next to the page. So the
+  example needs no CORS, no VPN and no local network access. It can also start from the
+  affine published with them (the affine part of the examples' JRC2018F-to-FCWB transform;
+  <code>?start=published</code>).</li>
+<li>With the affine left empty the page finds one before the field (<code>affine.ts</code>, on the CPU:
+  a few hundred thousand voxels are enough). It matches the two images' intensity
+  moments, centre to centre and principal axis to principal axis, which leaves the axes'
+  signs open; of the four orientations that do not mirror the image, the best correlated is
+  kept. Mirrors are not searched for, since correlation cannot tell handedness on a nearly
+  symmetric specimen: on the fly templates a mirror scores exactly as well (0.872) while
+  226 µm from the published affine. (A switch to search mirrors instead was tried and
+  removed: nothing tells a user when to turn it on.) A mirror image is registered by giving
+  its affine. Then it fits the 12 numbers by gradient ascent on the normalized
+  cross-correlation, at two resolutions. On the fly templates, which start 58 µm apart
+  (mean distance from where the published affine puts each voxel), that takes the
+  correlation from 0.14 to 0.84 (moments) and 0.87 (fit), and ends 2 µm from the published
+  affine (the voxels are 2.5 µm), in about 5 s. The moments assume both images show the
+  same whole object; a crop of one would need an affine given.</li>
+<li>The page shows the same registration as a <code>chunkmirage serve 'register://…'</code> command,
+  built through the generated <code>RegisterParams</code> type, with the found affine and the solved
+  levels filled in after a run. Solved from that command, Python's field matches the
+  page's to 0.01 µm (median; 0.04 µm at the 95th percentile) on the fly templates, whose
+  field moves tissue by 7 µm (median). Python's <code>register://</code> finds the same affine with
+  <code>affine=auto</code> (<code>registration.find_affine</code>, the page's search ported: PyTorch's autograd
+  supplies the gradient the page writes out by hand).</li>
+<li>Pipelines of ops run in the page without a second implementation: <code>pipeline.html</code> loads
+  Pyodide in a few web workers, writes the package's ops and <code>chunkmirage.fused</code> (the code
+  a pipeline stage runs, which imports nothing beyond numpy and the ops) into its file
+  system, and has them compute each chunk from a padded block the page's one reader
+  worker reads in TypeScript. One reader rather than one per worker: each store chunk is
+  decoded once for the page, and a piece it keeps is a whole store chunk (the inner chunk of
+  a shard), since zarrita decodes all of a chunk to read any of it; a 65 MB sea-temperature
+  tile in every worker, or decoded again for each part read, would not fit.</li>
+<li>The page's engine (<code>engine.ts</code>) is shared by the Neuroglancer page and a map page, and
+  serves each view as OME-Zarr and as GeoZarr: the map page's OpenLayers reads the latter
+  as it reads any GeoZarr store, the point being that chunkmirage's output is not tied to
+  one viewer. A map client keeps no chunk cache of its own, so the engine keeps computed
+  chunks (256 MB), and a slider that changes an op parameter serves the view under a new
+  name, which the client fetches afresh while the old chunks stay valid. Porting the ops to TypeScript or WebGPU shaders, the plan before, would have
+  meant one more implementation per op and parity tests to keep them equal; Pyodide made
+  the Python itself the browser's, at the cost of a 6 s start and single-threaded
+  WebAssembly per worker, which the ops' 0.05 to 0.13 s per block easily afford. The
+  readers stay in TypeScript (tensorstore has no WebAssembly build), and the gallery
+  (<code>index.html</code>) lists the demos; see <a href="../demos/">Demos</a>.</li>
+</ul>
+<h2 id="deployment-shapes">Deployment shapes<a class="headerlink" href="#deployment-shapes" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Laptop</strong>: <code>chunkmirage serve … --port 8000</code>, open the printed link.</li>
+<li><strong>Cluster GPU node</strong>: same, with <code>--public-url</code> pointing at an SSH tunnel or reverse
+  proxy (cellmap-flow's setup).</li>
+<li><strong>Multi-user / shared cache</strong>: put the cache in a real zarr store on local SSD (planned
+  <code>DiskCache</code>, opt-in and off by default), so workers share it and the cache doubles as a
+  partially materialized output dataset. "Browse to materialize" falls out naturally.</li>
+<li><strong>Inside an application</strong>: an application mounts the app in its own
+  (<code>Mount("/prefix", create_app(...))</code>), or starts <code>chunkmirage serve</code> with
+  <code>--ready-file</code> and its plugins installed; see the <a href="../reference/api/#mounted-in-another-app">API</a>.</li>
+</ul>
+<h2 id="open-questions">Open questions<a class="headerlink" href="#open-questions" title="Permanent link">&para;</a></h2>
+<ul>
+<li>Should re-chunking default to the source chunk shape (current) or to a viewer-friendly
+  64³? Neuroglancer performs best with ≤ 64³-ish chunks; sources often use 128³.</li>
+<li>Sharded zarr v3 output: worth emitting? Viewers read shards fine; only useful when the
+  cache is on disk.</li>
+<li>Auth: <code>--token</code> guards <code>/api/*</code>; the datasets stay open, because viewers send no
+  headers. Access per dataset (signed URLs, say) is still open.</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit"], "search": "../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

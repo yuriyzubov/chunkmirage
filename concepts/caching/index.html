@@ -1,0 +1,1457 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Spoof chunked array formats over HTTP with on-the-fly processing.">
+      
+      
+      
+        <link rel="canonical" href="https://yuriyzubov.github.io/chunkmirage/concepts/caching/">
+      
+      
+        <link rel="prev" href="../pipelines/">
+      
+      
+        <link rel="next" href="../interactivity/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Caching - chunkmirage</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/_mkdocstrings.css">
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#caching" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="chunkmirage" class="md-header__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            chunkmirage
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Caching
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="teal" data-md-color-accent="indigo"  aria-label="light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="chunkmirage" class="md-nav__button md-logo" aria-label="chunkmirage" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    chunkmirage
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/yuriyzubov/chunkmirage" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    chunkmirage
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../demos/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="https://yuriyzubov.github.io/chunkmirage/browser/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Demo gallery (in your browser) ↗
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Getting started
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Concepts
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Concepts
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../design/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture & design
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../pipelines/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Pipelines, ops and halos
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Caching
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-cached" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is cached
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fusion-or-why-uncached-ops-are-cheap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fusion, or why uncached ops are cheap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-lives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it lives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-caches-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who caches what
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-the-browser-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the browser engine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#state-outside-the-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State outside the parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-cache-every-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not cache every stage?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrent-requests-for-the-same-chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concurrent requests for the same chunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#order-of-work-and-requests-given-up-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Order of work, and requests given up on
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inspecting-and-clearing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting and clearing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../interactivity/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Interactivity
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../formats/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Formats and URLs
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+          
+        
+        <input class="md-nav__toggle md-toggle md-toggle--indeterminate" type="checkbox" id="__nav_6" >
+        
+          
+          <label class="md-nav__link" for="__nav_6" id="__nav_6_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Reference
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_6_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_6">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Reference
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/ops/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Ops
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/api/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    REST API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/python/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Python API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../reference/cli/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    CLI
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../faq/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    FAQ
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../roadmap/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Roadmap
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contributing & doc policy
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#what-is-cached" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        What is cached
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fusion-or-why-uncached-ops-are-cheap" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fusion, or why uncached ops are cheap
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-it-lives" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Where it lives
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#who-caches-what" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Who caches what
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#in-the-browser-engine" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        In the browser engine
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#keys" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Keys
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Keys">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#state-outside-the-parameters" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        State outside the parameters
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#why-not-cache-every-stage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Why not cache every stage?
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concurrent-requests-for-the-same-chunk" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concurrent requests for the same chunk
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#order-of-work-and-requests-given-up-on" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Order of work, and requests given up on
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inspecting-and-clearing" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Inspecting and clearing
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+    <a href="https://github.com/yuriyzubov/chunkmirage/edit/main/docs/concepts/caching.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="caching">Caching<a class="headerlink" href="#caching" title="Permanent link">&para;</a></h1>
+<h2 id="what-is-cached">What is cached<a class="headerlink" href="#what-is-cached" title="Permanent link">&para;</a></h2>
+<p>Each pipeline stage can memoize its output chunks. By default:</p>
+<table>
+<thead>
+<tr>
+<th>stage</th>
+<th>cached</th>
+<th>why</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>stage 0: raw source</td>
+<td>yes</td>
+<td>refetching from disk or S3 is the expensive part</td>
+</tr>
+<tr>
+<td>ops with <code>cache = True</code></td>
+<td>yes</td>
+<td>expensive to recompute (inference)</td>
+</tr>
+<tr>
+<td>an op with an input voxel size, and the levels made from it</td>
+<td>yes</td>
+<td>it runs on one level, and every coarser level is made from its output (<a href="../pipelines/#ops-at-one-resolution">ops at one resolution</a>)</td>
+</tr>
+<tr>
+<td>ops with <code>cache = False</code></td>
+<td>no</td>
+<td>fused with their neighbours into one stage and recomputed from the cached upstream stage</td>
+</tr>
+<tr>
+<td>encoded bytes (gzip, blosc, ...)</td>
+<td>no</td>
+<td>encoding is fast; caching arrays serves all formats</td>
+</tr>
+</tbody>
+</table>
+<p>So if you threshold, look, and threshold again with a different level, the raw chunk is
+read <strong>once</strong>. The threshold stage's hash changes, the raw stage's does not, and the next
+request hits the cache. <code>tests/test_pipeline.py::test_stage_cache_keys_isolate_downstream_edits</code>
+asserts exactly this.</p>
+<p>Set <code>cache_source=False</code> in the spec to disable raw caching (for example when the source is
+a fast local NVMe and memory is scarce).</p>
+<h2 id="fusion-or-why-uncached-ops-are-cheap">Fusion, or why uncached ops are cheap<a class="headerlink" href="#fusion-or-why-uncached-ops-are-cheap" title="Permanent link">&para;</a></h2>
+<p>Consecutive uncached ops are <em>fused</em>: one output chunk reads the upstream box once, padded
+by the sum of their halos, and runs the ops back to back. A four-op chain with halos
+5 + 0 + 5 + 8 on 64³ chunks reads a 100³ box, about four raw chunks. Giving each op its own
+cached chunk grid instead would pull 343 raw chunks for the first output chunk, because
+each halo widens the footprint at every stage. So <code>cache=True</code> is a deliberate cut in the
+chain for stages worth keeping (inference), not a speed knob to sprinkle on filters.</p>
+<h2 id="where-it-lives">Where it lives<a class="headerlink" href="#where-it-lives" title="Permanent link">&para;</a></h2>
+<p>In RAM, inside the server process: a Python dict of decoded numpy chunk arrays with
+byte-bounded LRU eviction (<a href="../../reference/python/"><code>chunkmirage.cache.LRUCache</code></a>).
+Default budget is 2 GB (<code>--cache-gb</code>). It disappears on exit, and each uvicorn worker has
+its own copy. A disk-backed cache that persists and is shared across workers is on the
+<a href="../../roadmap/">roadmap</a>.</p>
+<p>Separately, tensorstore keeps its own in-RAM cache of <em>decoded source chunks</em>
+(<code>--source-cache-gb</code>, default 0.5 GB), one pool for the whole process: every source it
+opens shares one tensorstore context, so the levels of an image, several images, and two
+opens of one image (a before and an after dataset, or the images a registration reads
+while its output serves them) draw on one budget and share what is decoded. It is what
+<code>register://</code>'s solves and refined blocks read through, since they read the images
+directly rather than through the stage cache above. On a local zlib zarr, reading a region
+again from the pool takes 1 to 2 ms against 30 ms decoding it, and a second open of the
+store in its own context would decode it again. Opened from Python with <code>open_source</code>
+alone, sources get no pool (<code>cache_bytes=0</code>); pass <code>cache_bytes</code> to have one.</p>
+<h2 id="who-caches-what">Who caches what<a class="headerlink" href="#who-caches-what" title="Permanent link">&para;</a></h2>
+<p>A viewer caches what it shows; chunkmirage caches what it computes from. The two are not
+copies of each other:</p>
+<table>
+<thead>
+<tr>
+<th>cache</th>
+<th>holds</th>
+<th>whose job</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>output chunks</td>
+<td>what a client displays</td>
+<td>the client's (Neuroglancer keeps its own)</td>
+</tr>
+<tr>
+<td>inputs</td>
+<td>source chunks that many outputs read: overlapping halos, neighbouring chunks, several ops or views of one image</td>
+<td>chunkmirage's: no client ever sees them</td>
+</tr>
+<tr>
+<td>expensive intermediates</td>
+<td>inference outputs, solved fields, refined blocks</td>
+<td>chunkmirage's</td>
+</tr>
+</tbody>
+</table>
+<p>Outputs are cached only when they are expensive (the <code>cache</code> flag above), not because a
+particular client may or may not keep them, so nothing depends on which client asks: a
+dask array reading each chunk once is served as well as a viewer.</p>
+<h2 id="in-the-browser-engine">In the browser engine<a class="headerlink" href="#in-the-browser-engine" title="Permanent link">&para;</a></h2>
+<p>The <a href="../../design/#client-side-browser-roadmap">browser page</a> keeps the same three, in the
+browser:</p>
+<ul>
+<li><strong>Fetched source bytes</strong>, in its service worker (512 MB, still compressed): every read of
+  the images' stores, by the page, its chunk workers and the viewer alike, goes through it,
+  and requests for a chunk already on its way wait for that fetch instead of starting
+  another. At most 24 fetches run at once; with more pending, Chrome refuses some.</li>
+<li><strong>Decoded pieces</strong>, aligned to the store's own chunks, in each context that reads (the
+  page for its block fits, each chunk worker for resampling; 128 to 192 MB each), so a store
+  chunk is decoded once per context however many regions overlap it.</li>
+<li><strong>Fitted blocks</strong> of <code>refine</code>d fields, on the page.</li>
+</ul>
+<p>Before the first two, zooming the EASI-FISH pair's link to full resolution fetched 11.7 GB
+for 0.9 GB of distinct store chunks, each read 13 times on average, and the network, not the
+GPU, set the pace. The same zoom on the same computer (an RTX 2080 Ti) since:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>separate caches per context</th>
+<th>shared</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>fetched</td>
+<td>11.7 GB</td>
+<td>1.1 GB</td>
+</tr>
+<tr>
+<td>a block's reads (median)</td>
+<td>37 s fixed, 52 s moving</td>
+<td>0.5 s, 0.9 s</td>
+</tr>
+<tr>
+<td>the zoomed view complete</td>
+<td>192 s</td>
+<td>98 s</td>
+</tr>
+</tbody>
+</table>
+<p>The GPU is now what the view waits for (busy 90% of the time). Blending refined blocks, added since, fits a ring of blocks more around the view: the same zoom now completes in 115 s.</p>
+<h2 id="keys">Keys<a class="headerlink" href="#keys" title="Permanent link">&para;</a></h2>
+<p>Every cache entry is keyed by <code>(stage_hash, chunk_index)</code> where <code>stage_hash</code> folds in:</p>
+<ul>
+<li>the source identity (path or URL) and scale level; for a <code>scene://</code> source, also the
+  whole transformation chain, so an edited registration gets fresh keys,</li>
+<li>the output chunk shape,</li>
+<li>the spec of every op up to and including this stage, with each op's <code>cache_token()</code> if
+  it has one (below).</li>
+</ul>
+<p>Consequences:</p>
+<ul>
+<li>Editing op <em>k</em> changes the hashes of stages <em>k..n</em> only. Upstream entries stay valid with
+  no explicit invalidation.</li>
+<li>Two pipelines with the same prefix share entries, including a second dataset branching
+  off the same model output.</li>
+<li>A pipeline's overall digest appears in served URLs (<code>/{name}/@{digest}/{format}</code>) so
+  viewers, which cache by URL, refetch after an edit.</li>
+</ul>
+<h3 id="state-outside-the-parameters">State outside the parameters<a class="headerlink" href="#state-outside-the-parameters" title="Permanent link">&para;</a></h3>
+<p>An op's output can depend on more than its parameters: model weights replaced in place, a
+lookup file that is rewritten. Such an op returns a string from <code>cache_token()</code> that
+changes when that state does, such as the file's modification time or a version number:</p>
+<div class="highlight"><pre><span></span><code><span class="k">class</span><span class="w"> </span><span class="nc">Model</span><span class="p">(</span><span class="n">Op</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s2">"model"</span>
+    <span class="n">cache</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="n">weights</span><span class="p">:</span> <span class="nb">str</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">cache_token</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="nb">str</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">getmtime</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">weights</span><span class="p">))</span>
+</code></pre></div>
+<p>The token is part of the op's identity, so it enters the stage hash and the digest in
+served URLs. A pipeline reads it when it is built, so a running server picks up a change
+when the dataset is rebuilt: <code>POST /api/datasets/{name}/refresh</code>, or
+<code>DatasetRegistry.refresh(name)</code> (every dataset without a name). Only datasets whose digest
+moved change: they get new keys, new links and a <code>change</code> event, and viewers refetch. The
+old entries are evicted as the cache fills. Ops without a token keep the digests they had.</p>
+<h2 id="why-not-cache-every-stage">Why not cache every stage?<a class="headerlink" href="#why-not-cache-every-stage" title="Permanent link">&para;</a></h2>
+<p>The cache has a fixed budget and every cached stage competes for it. Caching all stages of
+a five-stage pipeline stores five copies per chunk and evicts the valuable ones sooner;
+intermediate float32 stages are also four times the size of uint8 raw. The rule: cache a
+stage when recomputing it costs more than storing it. Raw I/O and inference qualify; a
+threshold that takes a millisecond does not.</p>
+<p>The <code>cache</code> flag is a heuristic set by the op author, and a pipeline overrides it per op
+with a <code>cache</code> key in the op's spec: <code>{"op": "gaussian", "sigma": 4, "cache": true}</code>, or
+<code>--op gaussian:sigma=4,cache=true</code>. Editing an op after it then reruns only the stages
+after the cached one. The flag is not part of the op's identity, since it does not change
+what the op computes; <code>GET /api/datasets/{name}</code> reports each op's setting as <code>cached</code>.
+Adaptive caching based on measured compute time is on the roadmap.</p>
+<h2 id="concurrent-requests-for-the-same-chunk">Concurrent requests for the same chunk<a class="headerlink" href="#concurrent-requests-for-the-same-chunk" title="Permanent link">&para;</a></h2>
+<p>Two requests for the same chunk that arrive while it is being computed share one
+computation (the second waits for the first, then reads the cache). Viewers retry and
+re-request aggressively, so without this a slow chunk would be computed several times.</p>
+<h2 id="order-of-work-and-requests-given-up-on">Order of work, and requests given up on<a class="headerlink" href="#order-of-work-and-requests-given-up-on" title="Permanent link">&para;</a></h2>
+<p>Whatever a pipeline computes, the server bounds the work, shares it, and drops what clients
+stop waiting for (<code>chunkmirage.demand</code>); nothing of it is specific to one viewer, op or
+source. At most <code>--threads</code> requests compute at once; the rest wait their turn on a plain
+semaphore, in no particular order. Every chunk request holds a claim on the work it needs,
+cancelled when its client disconnects; a request whose client left before its turn came
+costs nothing. Of the clients that read chunkmirage, Neuroglancer is the one that aborts
+requests, and it does so when a chunk it still wants needs a download slot (100 at once by
+default) held by one that scrolled out of view, so the claim earns its keep on expensive
+chunks; Fiji, napari, webKnossos, dask and tensorstore never abort, they simply stop
+asking, and for them the bound, the shared computation above and the cache are what keep
+the server responsive. Expensive work inside a request goes through a queue of its own
+with a few slots (three for <code>register://</code>'s refined blocks, whose fits share the GPU; an
+op's <code>slots</code> for an op that declares them, a model on a GPU say, in a queue named <code>op
+&lt;name&gt;</code>): a job is shared by every request that needs it, dropped unrun once none of them waits any
+more, and kept if it had started. Among waiting jobs the finest level goes first, then the
+one whose request arrived first. A request takes its place in line when it arrives, not
+when its job reaches the queue: an op's input is read before its job queues (so no slot is
+held reading), and reads take different times, so ordering by queueing would run a
+viewer's centre-first requests in stripes. A job only waits once its input is read, so a
+free slot never waits on a slow read. A request waiting on
+queued work gives its compute slot up meanwhile, so requests that need nothing expensive
+never wait behind ones that do. Work asked for from Python, with no request behind it, is
+never dropped. Ten requests for
+full-resolution chunks of the fly templates' refined registration, each given up on after
+half a second, had all their block fits dropped; a patient request for another chunk was
+served in 8.5 s. <code>GET /api/queue</code> reports what runs, waits and was dropped, per level. The
+browser page keeps the same rules (<code>web/src/demand.ts</code>); it learns of a given-up request
+from its streamed reply being cancelled, a service worker being told of nothing else.</p>
+<h2 id="inspecting-and-clearing">Inspecting and clearing<a class="headerlink" href="#inspecting-and-clearing" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code>curl<span class="w"> </span>localhost:8000/api/cache<span class="w">            </span><span class="c1"># {"entries":..,"bytes":..,"hits":..,"misses":..}</span>
+curl<span class="w"> </span>-X<span class="w"> </span>DELETE<span class="w"> </span>localhost:8000/api/cache<span class="w">  </span><span class="c1"># drop everything</span>
+</code></pre></div>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.sections", "navigation.expand", "content.code.copy", "content.action.edit"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

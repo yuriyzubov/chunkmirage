@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Track a Nucleus</title>
+<style>:root{--lightningcss-light: ;--lightningcss-dark:initial;color-scheme:dark;--bg:#0e1014;--panel:#161a20;--line:#262c36;--fg:#e7e9ec;--muted:#939cab;--faint:#5d6675;--accent:#7ab0ff;--accent-ink:#081225;--in:#45f07a;--out:#ff5a5a}*{box-sizing:border-box}html,body{height:100%;margin:0}body{background:var(--bg);color:var(--fg);grid-template-columns:minmax(300px,350px) 1fr;font:13px/1.45 system-ui,-apple-system,Segoe UI,sans-serif;display:grid}aside{background:var(--panel);border-right:1px solid var(--line);flex-direction:column;gap:16px;padding:18px 16px;display:flex;overflow-y:auto}a{color:var(--accent);text-decoration:none}h1{margin:0;font-size:15px;font-weight:650}p{margin:0}.muted{color:var(--muted)}.faint{color:var(--faint);font-size:12px}.label{letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-size:11px;font-weight:600}pre{border:1px solid var(--line);background:var(--bg);white-space:pre-wrap;word-break:break-all;border-radius:6px;margin:6px 0 0;padding:8px;font:11px/1.5 ui-monospace,SFMono-Regular,Menlo,monospace}button{background:var(--accent);color:var(--accent-ink);font:inherit;cursor:pointer;border:0;border-radius:6px;padding:6px 10px;font-weight:650}.state{color:var(--fg)}.counts{color:var(--muted);font-variant-numeric:tabular-nums;font-size:12px}.controls{flex-direction:column;gap:9px;display:flex}.control{grid-template-columns:1fr auto;align-items:center;gap:2px 8px;display:grid}.control input[type=range]{width:100%;accent-color:var(--accent);grid-column:1/-1}.control output{font-variant-numeric:tabular-nums;color:var(--muted)}.control select{min-width:0;max-width:100%;font:inherit;background:var(--bg);color:var(--fg);border:1px solid var(--line);border-radius:4px;padding:2px 4px}.control[title] span{-webkit-text-decoration:underline dotted var(--faint);text-decoration:underline dotted var(--faint);text-underline-offset:3px}.summary{font-size:13px}.summary b{font-weight:650}table{border-collapse:collapse;font-variant-numeric:tabular-nums;width:100%;font-size:12px}th{text-align:right;color:var(--faint);padding:2px 3px;font-weight:500}th:first-child,td:first-child{text-align:left}td{text-align:right;border-top:1px solid var(--line);padding:2px 3px}tr.dropped td{color:var(--faint)}.legend{color:var(--muted);gap:4px;font-size:12px;display:grid}.legend span{align-items:center;gap:7px;display:flex}.swatch{border-radius:2px;flex:none;width:10px;height:10px}main{background:#000;min-width:0;position:relative}main iframe{border:0;width:100%;height:100%;position:absolute;inset:0}.empty{text-align:center;color:var(--faint);place-content:center;padding:24px;display:grid;position:absolute;inset:0}#graph{background:var(--bg);border:1px solid var(--line);cursor:crosshair;border-radius:6px;width:100%;height:190px}#graph text{fill:var(--muted);font:10px system-ui,sans-serif}.captions{pointer-events:none;grid-template-columns:1fr 1fr 1fr;display:grid;position:absolute;bottom:14px;left:0;right:0}.captions span{text-align:center;color:#d7dbe0;background:#000000a6;border-radius:4px;justify-self:center;max-width:92%;padding:3px 9px;font-size:12px}[hidden]{display:none!important}@media (max-width:720px){body{grid-template-rows:auto 70vh;grid-template-columns:1fr}aside{border-right:0;border-bottom:1px solid var(--line)}}</style>
+  <script type="module" crossorigin src="./assets/track-Dkl71mJE.js"></script>
+  <link rel="modulepreload" crossorigin href="./assets/modulepreload-polyfill-P2Xu9kJm.js">
+  <link rel="modulepreload" crossorigin href="./assets/preload-helper-uBIymjUX.js">
+  <link rel="modulepreload" crossorigin href="./assets/ops-upVICUsh.js">
+  <link rel="modulepreload" crossorigin href="./assets/ome-CsTLwsh_.js">
+  <link rel="modulepreload" crossorigin href="./assets/chunkmirage.schema-C17jJkF5.js">
+  <link rel="modulepreload" crossorigin href="./assets/engine-CEBqtyxl.js">
+</head>
+<body>
+<aside>
+  <p><a href="./">← All demos</a></p>
+  <div>
+    <h1>Follow nuclei through two days of a growing colony</h1>
+  </div>
+  <p class="muted">A colony of human stem cells imaged every 5 minutes for 47 hours, with every
+    nucleus segmented in every frame (but numbered afresh in each). Double-click a nucleus and
+    it is followed frame by frame, forward and back in time, by its overlap with the next
+    frame's nuclei: only a box around it is read from each frame, and its volume is plotted
+    as each frame comes in. When it divides it vanishes for a few frames (mitosis breaks its
+    envelope down), and the segmentation does not say which new nuclei came from it: the
+    new nuclei that appear near where it was are guessed to be its daughters, and followed
+    too. Double-click more nuclei to follow them as well, a followed one again to drop it.
+    The nuclei followed are a segmentation this page computes and serves to the viewer, a zarr
+    array that exists nowhere: each lineage one segment, its colour, in every frame.</p>
+  <p class="faint">Data: <a href="https://www.biorxiv.org/content/10.1101/2024.06.28.601071v1">Dixon et al. 2024</a>,
+    Allen Institute for Cell Science: hiPS cells with lamin B1 tagged, 570 frames of 42 × 1248 × 1824,
+    and their nuclear segmentation (allencell bucket, OME-Zarr).</p>
+  <section>
+    <div class="label">Volumes of the nuclei followed</div>
+    <svg id="graph" viewBox="0 0 320 190" preserveAspectRatio="none"></svg>
+    <p class="summary" id="summary" style="margin-top: 6px"></p>
+    <p class="faint" style="margin-top: 4px">Dots: likely daughters, a guess (new nuclei that appeared within 18 µm
+      of a nucleus that vanished into mitosis, within 2 h). Dashed: the mitosis between. ×: where a
+      line ends before the movie does, and its colour leaves the viewer.</p>
+    <label class="faint" style="display: flex; gap: 6px; align-items: center; margin-top: 6px"><input type="checkbox" id="centre" checked>
+      Keep it centred as you step through time (scroll with Alt held, or press play on the t axis)</label>
+  </section>
+  <section>
+    <div class="label">Status</div>
+    <p class="state" id="state">Starting…</p>
+    <p class="counts" id="counts"></p>
+  </section>
+  <section>
+    <div class="label">The same from Python</div>
+    <pre id="command"></pre>
+    <p style="margin-top: 6px"><button id="copy" type="button">Copy</button></p>
+  </section>
+  <p class="faint">Everything here runs in this browser: the viewer reads the images from their
+    public bucket, the tracking (chunkmirage.tracking, one call a frame) runs in Pyodide in web
+    workers on boxes of the segmentation the page reads, and the lineages layer's chunks are
+    made here from the bucket's segmentation as the viewer asks for them. Nothing is uploaded.</p>
+</aside>
+<main>
+  <div class="empty" id="empty">Loading…</div>
+  <iframe id="ng" title="Neuroglancer" hidden></iframe>
+</main>
+</body>
+</html>
